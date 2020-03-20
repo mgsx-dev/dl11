@@ -1,24 +1,18 @@
 package net.mgsx.dl11;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.utils.Collections;
 
-public class DL11Game extends ApplicationAdapter {
-	
+import net.mgsx.dl11.assets.Assets;
+import net.mgsx.dl11.screens.GameScreen;
+
+public class DL11Game extends Game {
 	
 	@Override
 	public void create () {
-		// TODO create
+		Collections.allocateIterators = true;
+		Assets.i = new Assets();
+		setScreen(new GameScreen());
 	}
 
-	@Override
-	public void render () {
-		
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		// TODO draw
-	}
-	
 }
