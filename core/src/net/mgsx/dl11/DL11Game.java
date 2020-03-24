@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.Collections;
 
 import net.mgsx.dl11.assets.Assets;
-import net.mgsx.dl11.screens.GameScreen;
+import net.mgsx.dl11.screens.MazeScreen;
 
 public class DL11Game extends Game {
 	
@@ -12,7 +12,8 @@ public class DL11Game extends Game {
 	public void create () {
 		Collections.allocateIterators = true;
 		Assets.i = new Assets();
-		setScreen(new GameScreen());
+		// setScreen(new GameScreen());
+		setScreen(new MazeScreen());
 	}
 
 }
