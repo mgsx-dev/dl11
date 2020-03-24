@@ -15,7 +15,6 @@ public class Entity {
 	public static final GridPoint2 right = new GridPoint2(1,0);
 	public static final GridPoint2 down = new GridPoint2(0,1);
 	public static final GridPoint2 [] directions = new GridPoint2[]{left, up, right, down};
-	public final Vector2 castByDirection [] = new Vector2[]{new Vector2(),new Vector2(),new Vector2(),new Vector2()};
 
 	public Actor actor;
 	
@@ -37,5 +36,4 @@ public class Entity {
 		
 	}
 
-	
 }

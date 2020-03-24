@@ -28,6 +28,7 @@ public class WorldTile {
 			return cell == null || cell.getTile().getId() == 2;
 		}
 	};
+	private Hero hero;
 	private static final Ray2D worldRay = new Ray2D();
 	
 	
@@ -57,12 +58,22 @@ public class WorldTile {
 	}
 
 	private void createEntity(int x, int y, int id) {
+		if(id == 2){
+			entities.add(new Drone(this, x, y, false, false));
+		}
+		if(id == 3){
+			entities.add(new Drone(this, x, y, true, false));
+		}
+		if(id == 6){
+			entities.add(new Drone(this, x, y, false, true));
+		}
 		if(id == 7){
 			entities.add(new Drone(this, x, y, true, true));
 		}
 		if(id == 8){
-			entities.add(new Hero(this, x, y));
+			entities.add(hero = new Hero(this, x, y));
 		}
+		
 	}
 	
 	public void getActors(Group group){
@@ -72,33 +83,45 @@ public class WorldTile {
 	}
 	
 	public void update(float delta){
+		
+		boolean playerFired = false;
+		for(Entity e2 : entities){
+			if(e2 instanceof Drone){
+				playerFired |= ((Drone) e2).isFiringPlayer();
+			}
+		}
+		hero.fired = playerFired;
+		
 		for(Entity e : entities){
 			e.update(delta);
 		}
 		
-		for(Entity e : entities){
-			if(e instanceof Hero){
-				if(e.position.x < 1){
-					System.out.println("out left");
-				}
-				if(e.position.x > width - 1 - .5f){
-					System.out.println("out right");
-				}
-				if(e.position.y < 1){
-					System.out.println("out down");
-				}
-				if(e.position.y > height - 1 - .5f){
-					System.out.println("out up");
-				}
-			}
+		Hero e = hero;
+		if(e.position.x < 1){
+			System.out.println("out left");
 		}
+		if(e.position.x > width - 1 - .5f){
+			System.out.println("out right");
+		}
+		if(e.position.y < 1){
+			System.out.println("out down");
+		}
+		if(e.position.y > height - 1 - .5f){
+			System.out.println("out up");
+		}
+				
 	}
 
+	@Deprecated
 	public boolean rayCast(Vector2 result, Vector2 start, GridPoint2 direction, boolean castHeroes) {
+		return rayCast(result, start, new Vector2(direction.x, direction.y), castHeroes);
+	}
+	
+	public boolean rayCast(Vector2 result, Vector2 start, Vector2 direction, boolean castHeroes) {
 		boolean hurtPlayer = false;
 		
 		worldRay.origin.set(start);
-		worldRay.direction.set(direction.x, direction.y);
+		worldRay.direction.set(direction);
 		colMap.rayCast(result, normal, worldRay);
 		
 		/*
@@ -140,7 +163,7 @@ public class WorldTile {
 		return hurtPlayer;
 	}
 
-	public boolean clamp(Hero hero) {
+	public boolean clamp(Entity hero) {
 		return colMap.intersectCircle(hero.position, .5f);
 	}
 	

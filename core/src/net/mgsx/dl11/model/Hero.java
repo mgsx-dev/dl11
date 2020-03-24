@@ -15,6 +15,10 @@ public class Hero extends Entity
 	private WorldTile world;
 	private Group group;
 	private Image sprite;
+	public boolean fired;
+	private float blinkTimeout;
+	private float time;
+	public int life = 10; // TODO
 
 	public Hero(WorldTile world, int initX, int initY) {
 		super(initX, initY);
@@ -28,8 +32,30 @@ public class Hero extends Entity
 	
 	private static final Vector2 v2 = new Vector2();
 	
+	public boolean isGhost(){
+		return blinkTimeout > 0;
+	}
+	
 	@Override
 	public void update(float delta) {
+		
+		time += delta;
+		
+		if(fired){
+			if(blinkTimeout <= 0){
+				blinkTimeout = 3;
+				life--;
+				System.out.println("Lost life: " + life);
+			}
+		}
+		
+		if(blinkTimeout > 0){
+			blinkTimeout -= delta;
+			if(blinkTimeout <= 0){
+				// ? sound
+			}
+		}
+		
 		velocity.setZero();
 		if(UniControl.isPressed(UniControl.RIGHT)){
 			velocity.add(1, 0);
@@ -53,6 +79,10 @@ public class Hero extends Entity
 			sprite.setColor(Color.GOLD);
 		}else{
 			sprite.setColor(Color.WHITE);
+		}
+		
+		if(blinkTimeout > 0){
+			sprite.getColor().a = (time * 10) % 1f > .8f ? 1 : .2f;
 		}
 		
 		

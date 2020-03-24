@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -45,6 +46,8 @@ public class GameScreen extends StageScreen
 	
 	@Override
 	public void render(float delta) {
+		
+		delta = MathUtils.clamp(delta, 1/120f, 1/30f);
 		
 		worldTile.update(delta);
 		
