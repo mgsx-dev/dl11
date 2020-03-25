@@ -15,6 +15,13 @@ public class MazeCell {
 			new GridPoint2(0, -1)			
 	};
 	
+	public static final GridPoint2 [] DELTAS_YUP = {
+			new GridPoint2(-1, 0),
+			new GridPoint2(0, -1),
+			new GridPoint2(1, 0),
+			new GridPoint2(0, 1)			
+	};
+	
 	public final int x, y;
 	
 	boolean visited;

@@ -19,6 +19,7 @@ public class Hero extends Entity
 	private float blinkTimeout;
 	private float time;
 	public int life = 10; // TODO
+	public boolean controlEnabled = true;
 
 	public Hero(WorldTile world, int initX, int initY) {
 		super(initX, initY);
@@ -57,17 +58,19 @@ public class Hero extends Entity
 		}
 		
 		velocity.setZero();
-		if(UniControl.isPressed(UniControl.RIGHT)){
-			velocity.add(1, 0);
-		}
-		if(UniControl.isPressed(UniControl.LEFT)){
-			velocity.add(-1, 0);
-		}
-		if(UniControl.isPressed(UniControl.UP)){
-			velocity.add(0, 1);
-		}
-		if(UniControl.isPressed(UniControl.DOWN)){
-			velocity.add(0, -1);
+		if(controlEnabled){
+			if(UniControl.isPressed(UniControl.RIGHT)){
+				velocity.add(1, 0);
+			}
+			if(UniControl.isPressed(UniControl.LEFT)){
+				velocity.add(-1, 0);
+			}
+			if(UniControl.isPressed(UniControl.UP)){
+				velocity.add(0, 1);
+			}
+			if(UniControl.isPressed(UniControl.DOWN)){
+				velocity.add(0, -1);
+			}
 		}
 		float speed = 6;
 		velocity.nor().scl(speed);

@@ -34,6 +34,13 @@ public abstract class Grid2D {
 			new GridPoint2(0, -1)
 	};
 	
+	public int getWidth(){
+		return w;
+	}
+	public int getHeight(){
+		return h;
+	}
+	
 	public void createFrom(TiledMapTileLayer layer){
 		scaleX = 1f; // XXX / layer.getTileWidth();
 		scaleY = 1f; // XXX / layer.getTileHeight();
@@ -196,5 +203,8 @@ public abstract class Grid2D {
 			return true;
 		}
 		return false;
+	}
+	public boolean isObstacle(int x, int y) {
+		return obstacleMap[y*w+x];
 	}
 }
