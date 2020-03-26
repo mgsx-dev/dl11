@@ -51,4 +51,16 @@ public class Assets {
 	public TextureRegion getHeroRegion() {
 		return getTile(8);
 	}
+
+	public TextureRegion getMedPackRegion() {
+		return getTile(4);
+	}
+
+	public TextureRegion getFuelRegion() {
+		return getTile(5);
+	}
+
+	public TextureRegion getLifeRegion() {
+		return getMedPackRegion();
+	}
 }

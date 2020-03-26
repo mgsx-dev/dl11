@@ -10,7 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import net.mgsx.dl11.assets.Assets;
 import net.mgsx.dl11.model.Laser.State;
 
-// TODO lazer shuld be an entity as well (compound and controlled by the drone (same group)
+// TODO voir ce qu'il se passe quand le hero est dans la voiture : les drone se déplacenet mais ne tirent pas ?
+
 public class Drone extends Entity {
 
 	private boolean horizontal;
@@ -55,6 +56,7 @@ public class Drone extends Entity {
 		super.reset();
 		if(lasers != null){
 			for(Laser laser : lasers){
+				laser.reset();
 				laser.actor.setVisible(true);
 			}
 		}
@@ -76,6 +78,10 @@ public class Drone extends Entity {
 				laser.actor.setVisible(false);
 			}
 			return;
+		}else{
+			for(Laser laser : lasers){
+				laser.actor.setVisible(true);
+			}
 		}
 		
 		boolean movable = horizontal || vertical;

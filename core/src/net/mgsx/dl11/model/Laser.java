@@ -67,4 +67,9 @@ public class Laser {
 
 	}
 
+	public void reset() {
+		playerOn = false;
+		state = State.IDLE;
+	}
+
 }

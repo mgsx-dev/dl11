@@ -7,10 +7,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import net.mgsx.dl11.DL11Game;
+import net.mgsx.dl11.assets.Assets;
 import net.mgsx.dl11.maze.MazeCell;
 import net.mgsx.dl11.model.GameSettings;
+import net.mgsx.dl11.model.GameState;
 import net.mgsx.dl11.model.WorldMap;
 import net.mgsx.dl11.model.WorldTile;
+import net.mgsx.dl11.ui.HUD;
 import net.mgsx.dl11.utils.StageScreen;
 
 public class GameScreen extends StageScreen
@@ -26,13 +30,20 @@ public class GameScreen extends StageScreen
 	private Group entitiesGroup;
 	private WorldTile nextWorldTile;
 	private float transition;
+	private GameState game;
+	private HUD hud;
+	private float fadeOutTime;
 	
 	public GameScreen() {
 		super(new FitViewport(WORLD_WIDTH, WORLD_HEIGHT));
 		
-		worldMap = new WorldMap(GameSettings.MAP_WIDTH, GameSettings.MAP_HEIGHT);
+		game = new GameState();
+		
+		worldMap = new WorldMap(game, GameSettings.MAP_WIDTH, GameSettings.MAP_HEIGHT);
 		
 		stage.addActor(entitiesGroup = new Group());
+		
+		stage.addActor(hud = new HUD(game, Assets.i.skin));
 
 		worldTile = worldMap.getInitTile();
 		
@@ -53,7 +64,17 @@ public class GameScreen extends StageScreen
 		
 		delta = MathUtils.clamp(delta, 1/120f, 1/30f);
 		
-		worldTile.update(delta);
+		boolean isDead = game.heroLife <= 0;
+		
+		if(isDead){
+			fadeOutTime += delta;
+			if(fadeOutTime > 1){
+				fadeOutTime = 1;
+				DL11Game.i().setScreen(new GameScreen()); // TODO menu
+			}
+		}else{
+			worldTile.update(delta);
+		}
 		
 		if(nextWorldTile == null && worldTile.exiting){
 			// TODO paint in FBO for transitions ?
@@ -90,6 +111,11 @@ public class GameScreen extends StageScreen
 				nextWorldTile = null;
 				worldTile.active = true;
 				transition = 1;
+				
+				// only remove life if not in car TODO sauf si on change un peu le gameplay vis à vis de l'histoire.
+				if(worldTile.hero.car == null){
+					game.heroLife -= GameSettings.NEXT_TILE_DAMAGES;
+				}
 			}
 		}
 		
@@ -98,7 +124,8 @@ public class GameScreen extends StageScreen
 		// TODO render into FBO anyway to avoid glitches
 		
 		// render map here
-		mapRenderer.getBatch().setColor(Color.WHITE);
+		float lum = isDead ? 1 - fadeOutTime : 1;
+		mapRenderer.getBatch().setColor(lum, lum, lum, 1);
 		mapRenderer.setMap(worldTile.map);
 		mapRenderer.setView((OrthographicCamera)viewport.getCamera());
 		mapRenderer.render();

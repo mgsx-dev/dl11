@@ -14,9 +14,11 @@ import net.mgsx.dl11.utils.MapUtils;
 public class WorldMap {
 	private WorldTile [] cells;
 	private int w, h;
+	private GameState game;
 	
-	public WorldMap(int w, int h) {
+	public WorldMap(GameState game, int w, int h) {
 		super();
+		this.game = game;
 		this.w = w;
 		this.h = h;
 		cells = new WorldTile[w*h];
@@ -53,7 +55,7 @@ public class WorldMap {
 		}
 		
 		// XXX demo map
-		WorldTile worldTile = new WorldTile();
+		WorldTile worldTile = new WorldTile(game);
 		worldTile.x = x;
 		worldTile.y = y;
 		

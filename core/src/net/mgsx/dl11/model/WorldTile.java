@@ -48,8 +48,14 @@ public class WorldTile {
 	private boolean exitingCar;
 	private static final Ray2D worldRay = new Ray2D();
 	
+	private final GameState game;
 	
 	
+	public WorldTile(GameState game) {
+		super();
+		this.game = game;
+	}
+
 	public void loadCollisions(TiledMapTileLayer layer){
 		colMap.createFrom(layer);
 	}
@@ -93,9 +99,14 @@ public class WorldTile {
 			entities.add(new Drone(this, x, y, true, true));
 		}
 		if(id == 8){
-			entities.add(hero = new Hero(this, x, y));
+			entities.add(hero = new Hero(game, this, x, y));
 		}
-		
+		if(id == 4){
+			entities.add(new MedPack(x, y));
+		}
+		if(id == 5){
+			entities.add(new Fuel(x, y));
+		}
 	}
 	
 	public void getActors(Group group){
@@ -133,6 +144,14 @@ public class WorldTile {
 			if(e2 instanceof Drone){
 				playerFired |= ((Drone) e2).isFiringPlayer();
 			}
+			if(e2 instanceof Bonus){
+				Bonus b = (Bonus)e2;
+				if(hero.car == null && b.canBeAquired(game)){
+					if(hero.position.dst(e2.position) < 1){
+						b.aquire(game);
+					}
+				}
+			}
 		}
 		hero.fired = playerFired;
 		
@@ -141,7 +160,9 @@ public class WorldTile {
 		for(Entity e : entities){
 			
 			if(e instanceof Drone){
-				((Drone) e).active = car == null;
+				// XXX faut faire un choix là
+				// ((Drone) e).active = car == null;
+				((Drone) e).active = hero.car == null;
 			}
 			
 			e.update(delta);
@@ -189,6 +210,11 @@ public class WorldTile {
 					hero.position.set(car.position.x + car.width/2, car.position.y + car.height/2);
 					hero.actor.setVisible(false);
 					exitingCar = false;
+					
+					// transfert fuel TODO maybe not full fuel ... 
+					game.carFuel += game.heroFuel;
+					game.heroFuel = 0;
+					
 				}else if(exitingCar && !collideWithCar){
 					exitingCar = false;
 				}
@@ -298,7 +324,7 @@ public class WorldTile {
 	public void spawnCar() {
 		// for init tile only
 		
-		car = new Car((int)(GameScreen.WORLD_WIDTH/2), (int)(GameScreen.WORLD_HEIGHT/2));
+		car = new Car(game, (int)(GameScreen.WORLD_WIDTH/2), (int)(GameScreen.WORLD_HEIGHT/2));
 		entities.add(car);
 	}
 

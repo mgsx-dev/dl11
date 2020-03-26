@@ -18,12 +18,13 @@ public class Hero extends Entity
 	public boolean fired;
 	private float blinkTimeout;
 	private float time;
-	public int life = 10; // TODO
 	public boolean controlEnabled = true;
 	public Car car;
+	private GameState game;
 
-	public Hero(WorldTile world, int initX, int initY) {
+	public Hero(GameState game, WorldTile world, int initX, int initY) {
 		super(initX, initY);
+		this.game = game;
 		this.world = world;
 		actor = group = new Group();
 		sprite = new Image(Assets.i.getHeroRegion());
@@ -46,8 +47,7 @@ public class Hero extends Entity
 		if(fired){
 			if(blinkTimeout <= 0){
 				blinkTimeout = 3;
-				life--;
-				System.out.println("Lost life: " + life);
+				game.heroLife -= GameSettings.DRONE_DAMAGES;
 			}
 		}
 		
@@ -73,7 +73,20 @@ public class Hero extends Entity
 				velocity.add(0, -1);
 			}
 		}
-		float speed = 6;
+		
+		float speed;
+		if(car != null){
+			if(game.carFuel > 0){
+				speed = 1;
+				game.carFuel -= speed * GameSettings.CAR_FUEL_CONSUMPTION_PER_METER * delta;
+			}else{
+				speed = 0;
+			}
+		}else{
+			speed = 6;
+		}
+		
+		
 		velocity.nor().scl(speed);
 		
 		position.mulAdd(velocity, delta);

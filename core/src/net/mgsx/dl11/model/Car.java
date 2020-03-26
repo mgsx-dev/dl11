@@ -17,10 +17,11 @@ public class Car extends Entity {
 	public boolean controlEnabled;
 	private float time;
 	private float wheelAngle;
+	private GameState game;
 
-	public Car(int initX, int initY) {
+	public Car(GameState game, int initX, int initY) {
 		super(initX, initY);
-		
+		this.game = game;
 		this.width = 3;
 		this.height = 2;
 		
@@ -59,7 +60,7 @@ public class Car extends Entity {
 		wheelL.setPosition(.5f, .5f, Align.center);
 		wheelR.setPosition(2.5f, .5f, Align.center);
 		
-		if(controlEnabled){
+		if(controlEnabled && game.carFuel > 0){
 			car.setY(MathUtils.sin(time * 30) * .1f);
 			
 			wheelAngle += -velocity.x * 4;
