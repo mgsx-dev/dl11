@@ -27,13 +27,17 @@ public class Entity {
 		super();
 		this.initX = initX;
 		this.initY = initY;
-		position.set(initX + .5f, initY + .5f);
-		velocity.setZero();
+		reset();
 	}
 
 	public void update(float delta) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void reset() {
+		position.set(initX + .5f, initY + .5f);
+		velocity.setZero();
 	}
 
 }

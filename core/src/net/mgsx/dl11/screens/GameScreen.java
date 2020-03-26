@@ -15,8 +15,8 @@ import net.mgsx.dl11.utils.StageScreen;
 
 public class GameScreen extends StageScreen
 {
-	private static final float WORLD_WIDTH = 24; //768;
-	private static final float WORLD_HEIGHT = 18; //576;
+	public static final float WORLD_WIDTH = 24; //768;
+	public static final float WORLD_HEIGHT = 18; //576;
 	private static final float unitScale = 1f / 32f;
 
 	private OrthogonalTiledMapRenderer mapRenderer;
@@ -37,6 +37,8 @@ public class GameScreen extends StageScreen
 		worldTile = worldMap.getInitTile();
 		
 		worldTile.reset();
+		
+		worldTile.spawnCar();
 		
 		worldTile.getActors(entitiesGroup);
 		
@@ -63,6 +65,8 @@ public class GameScreen extends StageScreen
 			
 			// XXX temporary test, should'nt happens with real maps
 			if(nextWorldTile != null){
+				
+				nextWorldTile.transfert(worldTile);
 				
 				worldTile.reset();
 				

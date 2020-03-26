@@ -104,7 +104,7 @@ public abstract class Grid2D {
 			gridPosition.add(gridDirection);
 			
 			// stop when collide with obstacle (or map border)
-			if(collide(gridPosition)){
+			if(collide(gridPosition, true)){
 				break;
 			}
 		}
@@ -127,18 +127,18 @@ public abstract class Grid2D {
 		return length;
 	}
 	
-	public boolean collide(Vector2 worldPoint){
+	public boolean collide(Vector2 worldPoint, boolean borderAsObstacle){
 		gridPosition.set(MathUtils.floor(worldPoint.x * scaleX), MathUtils.floor(worldPoint.y * scaleY));
-		return collide(gridPosition);
+		return collide(gridPosition, borderAsObstacle);
 	}
 
-	private boolean collide(GridPoint2 point) {
-		return collide(point.x, point.y);
+	private boolean collide(GridPoint2 point, boolean borderAsObstacle) {
+		return collide(point.x, point.y, borderAsObstacle);
 	}
 
-	private boolean collide(int x, int y) {
+	private boolean collide(int x, int y, boolean borderAsObstacle) {
 		if(x>=0 && x<w && y>=0 && y<h) return obstacleMap[y*w+x];
-		return true;
+		return borderAsObstacle;
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public abstract class Grid2D {
 	 * @param radius
 	 * @return
 	 */
-	public boolean intersectCircle(Vector2 center, float radius){
+	public boolean intersectCircle(Vector2 center, float radius, boolean borderAsObstacle){
 		
 		int ix1 = MathUtils.floor((center.x - radius) * scaleX);
 		int ix2 = MathUtils.ceil((center.x + radius) * scaleX);
@@ -159,7 +159,7 @@ public abstract class Grid2D {
 		boolean colliding = false;
 		for(int ix = ix1 ; ix <= ix2 ; ix++){
 			for(int iy = iy1 ; iy <= iy2 ; iy++){
-				if(collide(ix, iy)){
+				if(collide(ix, iy, borderAsObstacle)){
 					colliding |= intersectSegment(center, radius, ix, iy, ix+1, iy);
 					colliding |= intersectSegment(center, radius, ix, iy+1, ix+1, iy+1);
 					colliding |= intersectSegment(center, radius, ix, iy, ix, iy+1);
@@ -175,6 +175,14 @@ public abstract class Grid2D {
 		}
 		
 		return colliding;
+	}
+	
+	public static boolean intersectRectCircle(Vector2 center, float radius, float rx, float ry, float rw, float rh){
+		boolean lcol = center.x + radius >= rx;
+		boolean rcol = center.x - radius <= rx + rw;
+		boolean tcol = center.y + radius >= ry;
+		boolean bcol = center.y - radius <= ry + rh;
+		return lcol && rcol && tcol && bcol;
 	}
 	
 	private Vector2 start = new Vector2();

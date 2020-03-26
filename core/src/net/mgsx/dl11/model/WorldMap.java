@@ -25,7 +25,7 @@ public class WorldMap {
 	private WorldTile getTile(int x, int y, int direction){
 		if(x>=0 && x<w && y>=0 && y<h){
 			WorldTile cell = cells[y*w+x];
-			if(cell == null || true){ // XXX force reload because of some early bugs
+			if(cell == null){ // XXX force reload because of some early bugs
 				cell = cells[y*w+x] = loadTile(x, y, direction);
 			}
 			return cell;

@@ -22,7 +22,9 @@ public class Drone extends Entity {
 	private int currentDirection;
 	private Image sprite;
 	
-	private Array<Laser> lasers = new Array<Laser>();
+	public boolean active = true;
+	
+	private final Array<Laser> lasers = new Array<Laser>();
 	
 	public Drone(WorldTile world, int initX, int initY, boolean horizontal, boolean vertical) {
 		super(initX, initY);
@@ -48,6 +50,16 @@ public class Drone extends Entity {
 		currentDirection = !horizontal ? RIGHT : DOWN;
 	}
 	
+	@Override
+	public void reset() {
+		super.reset();
+		if(lasers != null){
+			for(Laser laser : lasers){
+				laser.actor.setVisible(true);
+			}
+		}
+	}
+	
 	public boolean isFiringPlayer() {
 		for(Laser laser : lasers){
 			if(laser.playerOn && laser.state == State.FIRE) return true;
@@ -57,6 +69,15 @@ public class Drone extends Entity {
 	
 	@Override
 	public void update(float delta) {
+		
+		if(!active){
+			actor.setPosition(position.x, position.y);
+			for(Laser laser : lasers){
+				laser.actor.setVisible(false);
+			}
+			return;
+		}
+		
 		boolean movable = horizontal || vertical;
 		boolean hurtPlayer = false;
 		for(Laser laser : lasers){

@@ -20,6 +20,7 @@ public class Hero extends Entity
 	private float time;
 	public int life = 10; // TODO
 	public boolean controlEnabled = true;
+	public Car car;
 
 	public Hero(WorldTile world, int initX, int initY) {
 		super(initX, initY);
@@ -102,6 +103,17 @@ public class Hero extends Entity
 		
 		*/
 		actor.setPosition(position.x, position.y);
+		
+		if(car != null){
+			car.position.set(position.x - car.width/2, position.y - car.height/2);
+			car.velocity.set(velocity);
+		}
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		if(actor != null) actor.setVisible(true);
 	}
 	
 }

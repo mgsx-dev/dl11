@@ -1,5 +1,7 @@
 package net.mgsx.dl11.model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
 import net.mgsx.dl11.maze.MazeCell;
+import net.mgsx.dl11.screens.GameScreen;
 import net.mgsx.dl11.utils.Grid2D;
 import net.mgsx.dl11.utils.MapAnalyser;
 import net.mgsx.dl11.utils.Ray2D;
@@ -41,6 +44,8 @@ public class WorldTile {
 	public Hero hero;
 	private boolean entering;
 	public boolean active;
+	public Car car;
+	private boolean exitingCar;
 	private static final Ray2D worldRay = new Ray2D();
 	
 	
@@ -102,13 +107,13 @@ public class WorldTile {
 	public void setEntering(int direction){
 		// XXX this.hero = hero;
 		
-		GridPoint2 point = MapAnalyser.getEntry(colMap, direction);
+		Vector2 point = MapAnalyser.getEntry(colMap, direction);
 		
 		GridPoint2 delta = MazeCell.DELTAS[direction];
 		
 		float borderDist = 1f;
 		
-		this.hero.position.set(point.x + 0.5f - delta.x * borderDist, point.y + 0.5f - delta.y * borderDist);
+		this.hero.position.set(point.x - delta.x * borderDist, point.y - delta.y * borderDist);
 		
 		this.hero.velocity.setZero();
 		
@@ -134,10 +139,18 @@ public class WorldTile {
 		this.hero.controlEnabled = active;
 		
 		for(Entity e : entities){
+			
+			if(e instanceof Drone){
+				((Drone) e).active = car == null;
+			}
+			
 			e.update(delta);
 		}
 		
 		Hero e = hero;
+		
+		
+		
 		if(entering){
 			float heroRadius = .6f; // XXX extra size
 
@@ -168,13 +181,29 @@ public class WorldTile {
 				exitDirection = MazeCell.NORTH;
 				exiting = true;
 			}
+			if(car != null && hero.car == null){
+				boolean collideWithCar = Grid2D.intersectRectCircle(hero.position, heroRadius, car.position.x, car.position.y, car.width, car.height);
+				if(!exitingCar && collideWithCar){
+					hero.car = car;
+					car.controlEnabled = true;
+					hero.position.set(car.position.x + car.width/2, car.position.y + car.height/2);
+					hero.actor.setVisible(false);
+					exitingCar = false;
+				}else if(exitingCar && !collideWithCar){
+					exitingCar = false;
+				}
+			}
+			if(car != null && hero.car != null){
+				if(Gdx.input.isKeyJustPressed(Input.Keys.X)){
+					hero.car = null;
+					car.controlEnabled = false;
+					hero.actor.setVisible(true);
+					hero.actor.toFront();
+					exitingCar = true;
+				}
+			}
 		}
 				
-	}
-	
-	@Deprecated
-	public boolean rayCast(Vector2 result, Vector2 start, GridPoint2 direction, boolean castHeroes) {
-		return rayCast(result, start, new Vector2(direction.x, direction.y), castHeroes);
 	}
 	
 	public boolean rayCast(Vector2 result, Vector2 start, Vector2 direction, boolean castHeroes) {
@@ -223,8 +252,31 @@ public class WorldTile {
 		return hurtPlayer;
 	}
 
-	public boolean clamp(Entity hero) {
-		return colMap.intersectCircle(hero.position, .5f);
+	public boolean clamp(Entity e) {
+		if(e instanceof Hero){
+			Hero h = (Hero)e;
+			Car c = h.car;
+			if(c != null){
+				boolean collide = false;
+				float cRadius = .5f; // XXX 1
+				if(colMap.intersectCircle(center.set(h.position.x - 1, h.position.y), cRadius, false)){
+					collide = true;
+					h.position.set(center).sub(-1, 0);
+				}
+				if(colMap.intersectCircle(center.set(h.position.x + 1, h.position.y), cRadius, false)){
+					collide = true;
+					h.position.set(center).sub(1, 0);
+				}
+//				if(collide){
+//					h.position.set(c.position.x + c.width/2, c.position.y+c.height/2);
+//				}
+				return collide;
+			}else{
+				return colMap.intersectCircle(e.position, .5f, false);
+			}
+		}else{
+			return colMap.intersectCircle(e.position, .5f, true); // TODO radius based on entity
+		}
 	}
 
 	public void reset() {
@@ -233,6 +285,30 @@ public class WorldTile {
 		exiting = false;
 		entering = false;
 		active = false;
+		
+		hero.car = null;
+		
+		for(Entity e : entities){
+			if(!(e instanceof Car)){
+				e.reset();
+			}
+		}
+	}
+
+	public void spawnCar() {
+		// for init tile only
+		
+		car = new Car((int)(GameScreen.WORLD_WIDTH/2), (int)(GameScreen.WORLD_HEIGHT/2));
+		entities.add(car);
+	}
+
+	public void transfert(WorldTile worldTile) {
+		if(worldTile.hero.car != null){
+			hero.car = car = worldTile.car;
+			worldTile.entities.removeValue(worldTile.car, true);
+			worldTile.car = null;
+			entities.add(car);
+		}
 	}
 
 	
