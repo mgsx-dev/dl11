@@ -5,22 +5,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.dl11.DL11Game;
 import net.mgsx.dl11.assets.Assets;
-import net.mgsx.dl11.maze.MazeCell;
 import net.mgsx.dl11.model.GameSettings;
 import net.mgsx.dl11.model.GameState;
+import net.mgsx.dl11.model.Story;
+import net.mgsx.dl11.model.StoryHandler;
 import net.mgsx.dl11.model.WorldMap;
 import net.mgsx.dl11.model.WorldTile;
+import net.mgsx.dl11.ui.Dialogs;
 import net.mgsx.dl11.ui.HUD;
 import net.mgsx.dl11.utils.StageScreen;
 
-public class GameScreen extends StageScreen
+public class GameScreen extends StageScreen implements StoryHandler
 {
-	public static final float WORLD_WIDTH = 24; //768;
-	public static final float WORLD_HEIGHT = 18; //576;
 	private static final float unitScale = 1f / 32f;
 
 	private OrthogonalTiledMapRenderer mapRenderer;
@@ -33,17 +35,21 @@ public class GameScreen extends StageScreen
 	private GameState game;
 	private HUD hud;
 	private float fadeOutTime;
+	private Stage gameStage;
+	private boolean locked;
 	
 	public GameScreen() {
-		super(new FitViewport(WORLD_WIDTH, WORLD_HEIGHT));
+		super(new FitViewport(GameSettings.HUD_WIDTH, GameSettings.HUD_HEIGHT));
 		
-		game = new GameState();
+		gameStage = new Stage(new FitViewport(GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT));
+		
+		game = new GameState(this);
 		
 		worldMap = new WorldMap(game, GameSettings.MAP_WIDTH, GameSettings.MAP_HEIGHT);
 		
-		stage.addActor(entitiesGroup = new Group());
+		gameStage.addActor(entitiesGroup = new Group());
 		
-		stage.addActor(hud = new HUD(game, Assets.i.skin));
+		gameStage.addActor(hud = new HUD(game, Assets.i.skin));
 
 		worldTile = worldMap.getInitTile();
 		
@@ -53,10 +59,22 @@ public class GameScreen extends StageScreen
 		
 		worldTile.getActors(entitiesGroup);
 		
-		worldTile.setEntering(MazeCell.EAST);
+		// worldTile.setEntering(MazeCell.EAST);
 		worldTile.active = true;
 		
 		mapRenderer = new OrthogonalTiledMapRenderer(worldTile.map, unitScale);
+		
+		Story.enteringGame(game);
+	}
+	
+	@Override
+	public void spawnText(String text){
+		locked = true;
+		Dialogs.spawnInfo(stage, text, Align.top, ()->unlock());
+	}
+	
+	private void unlock(){
+		locked = false;
 	}
 	
 	@Override
@@ -64,16 +82,20 @@ public class GameScreen extends StageScreen
 		
 		delta = MathUtils.clamp(delta, 1/120f, 1/30f);
 		
+		float gameDelta = locked ? 0 : delta;
+		
+		worldTile.noInput = locked;
+		
 		boolean isDead = game.heroLife <= 0;
 		
 		if(isDead){
 			fadeOutTime += delta;
 			if(fadeOutTime > 1){
 				fadeOutTime = 1;
-				DL11Game.i().setScreen(new GameScreen()); // TODO menu
+				Story.heroFail(game);
 			}
 		}else{
-			worldTile.update(delta);
+			worldTile.update(gameDelta);
 		}
 		
 		if(nextWorldTile == null && worldTile.exiting){
@@ -104,8 +126,9 @@ public class GameScreen extends StageScreen
 		}
 		
 		if(nextWorldTile != null){
-			nextWorldTile.update(delta);
-			transition += delta * 1f;
+			worldTile.noInput = true;
+			nextWorldTile.update(gameDelta);
+			transition += gameDelta * 1f;
 			if(transition >= 1){
 				worldTile = nextWorldTile;
 				nextWorldTile = null;
@@ -116,28 +139,45 @@ public class GameScreen extends StageScreen
 				if(worldTile.hero.car == null){
 					game.heroLife -= GameSettings.NEXT_TILE_DAMAGES;
 				}
+				
+				Story.enteringNewTile(game, worldTile);
 			}
 		}
 		
 		clear(Color.BLACK);
 		
 		// TODO render into FBO anyway to avoid glitches
+		gameStage.getViewport().apply();
 		
 		// render map here
 		float lum = isDead ? 1 - fadeOutTime : 1;
 		mapRenderer.getBatch().setColor(lum, lum, lum, 1);
 		mapRenderer.setMap(worldTile.map);
-		mapRenderer.setView((OrthographicCamera)viewport.getCamera());
+		mapRenderer.setView((OrthographicCamera)gameStage.getViewport().getCamera());
 		mapRenderer.render();
 		
 		if(nextWorldTile != null){
 			mapRenderer.getBatch().setColor(Color.GREEN);
 			mapRenderer.setMap(nextWorldTile.map);
-			mapRenderer.setView(viewport.getCamera().combined, (1-transition) * WORLD_WIDTH, 0, WORLD_WIDTH, WORLD_HEIGHT);
+			mapRenderer.setView(gameStage.getViewport().getCamera().combined, (1-transition) * GameSettings.WORLD_WIDTH, 0, GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT);
 			mapRenderer.render();
 		}
 		
 		
+		gameStage.act();
+		gameStage.draw();
+		
+		stage.getViewport().apply();
 		super.render(delta);
+		
+		if(game.gameOver && !locked){
+			DL11Game.i().setScreen(new MenuScreen());
+		}
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+		gameStage.getViewport().update(width, height);
+		super.resize(width, height);
 	}
 }

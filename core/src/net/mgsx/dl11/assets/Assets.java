@@ -2,7 +2,9 @@ package net.mgsx.dl11.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
@@ -16,11 +18,20 @@ public class Assets {
 	public final Array<MapDesc> maps = new Array<MapDesc>();
 	public Texture car, wheel;
 	
+	public final TiledMap initMap, lastMap;
+	
 	public Assets() {
 		for(int i=0 ; i<4 ; i++){
 			loadMap("maps/map" + (i+1) + ".tmx");
 		}
+		
+		initMap = new TmxMapLoader().load("maps/map-init.tmx");
+		lastMap  = new TmxMapLoader().load("maps/map-last.tmx");
+		
 		skin = new Skin(Gdx.files.internal("skins/game-skin.json"));
+		skin.getRegion("white").getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		
+		skin.getFont("default-font").getData().setLineHeight(16);
 		
 		car = new Texture("sprites/car.png");
 		wheel = new Texture("sprites/wheel.png");

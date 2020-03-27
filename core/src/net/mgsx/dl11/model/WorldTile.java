@@ -1,7 +1,5 @@
 package net.mgsx.dl11.model;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -13,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
 import net.mgsx.dl11.maze.MazeCell;
-import net.mgsx.dl11.screens.GameScreen;
 import net.mgsx.dl11.utils.Grid2D;
 import net.mgsx.dl11.utils.MapAnalyser;
 import net.mgsx.dl11.utils.Ray2D;
+import net.mgsx.dl11.utils.UniControl;
 
 public class WorldTile {
 	
@@ -49,6 +47,9 @@ public class WorldTile {
 	private static final Ray2D worldRay = new Ray2D();
 	
 	private final GameState game;
+	public boolean noInput;
+	public boolean isLastTile;
+	public boolean isFirstTile;
 	
 	
 	public WorldTile(GameState game) {
@@ -149,6 +150,7 @@ public class WorldTile {
 				if(hero.car == null && b.canBeAquired(game)){
 					if(hero.position.dst(e2.position) < 1){
 						b.aquire(game);
+						Story.pickupBonus(game, b);
 					}
 				}
 			}
@@ -181,51 +183,56 @@ public class WorldTile {
 				entering = false;
 			}
 		}else{
-			float heroRadius = .5f;
-			if(e.position.x <= heroRadius){
-				System.out.println("out left");
-				exitDirection = MazeCell.WEST;
-				exiting = true;
-			}
-			if(e.position.x >= width - heroRadius){
-				System.out.println("out right");
-				exitDirection = MazeCell.EAST;
-				exiting = true;
-			}
-			if(e.position.y <= heroRadius){
-				System.out.println("out down");
-				exitDirection = MazeCell.SOUTH;
-				exiting = true;
-			}
-			if(e.position.y >= height - heroRadius){
-				System.out.println("out up");
-				exitDirection = MazeCell.NORTH;
-				exiting = true;
-			}
-			if(car != null && hero.car == null){
-				boolean collideWithCar = Grid2D.intersectRectCircle(hero.position, heroRadius, car.position.x, car.position.y, car.width, car.height);
-				if(!exitingCar && collideWithCar){
-					hero.car = car;
-					car.controlEnabled = true;
-					hero.position.set(car.position.x + car.width/2, car.position.y + car.height/2);
-					hero.actor.setVisible(false);
-					exitingCar = false;
-					
-					// transfert fuel TODO maybe not full fuel ... 
-					game.carFuel += game.heroFuel;
-					game.heroFuel = 0;
-					
-				}else if(exitingCar && !collideWithCar){
-					exitingCar = false;
+			if(!noInput){
+				float heroRadius = .5f;
+				if(e.position.x <= heroRadius){
+					System.out.println("out left");
+					exitDirection = MazeCell.WEST;
+					exiting = true;
 				}
-			}
-			if(car != null && hero.car != null){
-				if(Gdx.input.isKeyJustPressed(Input.Keys.X)){
-					hero.car = null;
-					car.controlEnabled = false;
-					hero.actor.setVisible(true);
-					hero.actor.toFront();
-					exitingCar = true;
+				if(e.position.x >= width - heroRadius){
+					System.out.println("out right");
+					exitDirection = MazeCell.EAST;
+					exiting = true;
+				}
+				if(e.position.y <= heroRadius){
+					System.out.println("out down");
+					exitDirection = MazeCell.SOUTH;
+					exiting = true;
+				}
+				if(e.position.y >= height - heroRadius){
+					System.out.println("out up");
+					exitDirection = MazeCell.NORTH;
+					exiting = true;
+				}
+				if(car != null && hero.car == null){
+					boolean collideWithCar = Grid2D.intersectRectCircle(hero.position, heroRadius, car.position.x, car.position.y, car.width, car.height);
+					if(!exitingCar && collideWithCar){
+						hero.car = car;
+						car.controlEnabled = true;
+						hero.position.set(car.position.x + car.width/2, car.position.y + car.height/2);
+						hero.actor.setVisible(false);
+						exitingCar = false;
+						
+						// transfert fuel TODO maybe not full fuel ... 
+						game.carFuel += game.heroFuel;
+						game.heroFuel = 0;
+						
+						Story.enteringCar(game);
+						
+					}else if(exitingCar && !collideWithCar){
+						exitingCar = false;
+					}
+				}
+				if(car != null && hero.car != null){
+					if(UniControl.isActionJustPressed()){
+						hero.car = null;
+						car.controlEnabled = false;
+						hero.actor.setVisible(true);
+						hero.actor.toFront();
+						exitingCar = true;
+						Story.exitingCar(game);
+					}
 				}
 			}
 		}
@@ -324,7 +331,7 @@ public class WorldTile {
 	public void spawnCar() {
 		// for init tile only
 		
-		car = new Car(game, (int)(GameScreen.WORLD_WIDTH/2), (int)(GameScreen.WORLD_HEIGHT/2));
+		car = new Car(game, (int)(GameSettings.WORLD_WIDTH/2), (int)(GameSettings.WORLD_HEIGHT/2));
 		entities.add(car);
 	}
 

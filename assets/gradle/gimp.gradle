@@ -43,7 +43,7 @@ pdb.gimp_quit(1)
 }
 
 
-def gimpExportLayers(src, dst, def ext = ".png"){
+def gimpExportLayers(src, dst, def ext = ""){
 
 	def t = task "gimpExportLayers_$src"(type: Exec){
 		commandLine 'gimp', '-i', '--batch-interpreter=python-fu-eval', '-b', '-'

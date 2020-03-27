@@ -15,6 +15,8 @@ public class WorldMap {
 	private WorldTile [] cells;
 	private int w, h;
 	private GameState game;
+	private final int initX;
+	private final int initY;
 	
 	public WorldMap(GameState game, int w, int h) {
 		super();
@@ -22,13 +24,25 @@ public class WorldMap {
 		this.w = w;
 		this.h = h;
 		cells = new WorldTile[w*h];
+		
+		initX = 0;
+		initY = h/2;
+		
+		WorldTile initTile = loadTile(initX, initY, Assets.i.initMap);
+		initTile.isFirstTile = true;
+		WorldTile lastTile = loadTile(w-1, h/2, Assets.i.lastMap);
+		lastTile.isLastTile = true;
+	}
+
+	private WorldTile getTile(int x, int y){
+		return cells[y*w+x];
 	}
 	
 	private WorldTile getTile(int x, int y, int direction){
 		if(x>=0 && x<w && y>=0 && y<h){
 			WorldTile cell = cells[y*w+x];
-			if(cell == null){ // XXX force reload because of some early bugs
-				cell = cells[y*w+x] = loadTile(x, y, direction);
+			if(cell == null){ 
+				cell = loadTile(x, y, direction);
 			}
 			return cell;
 		}
@@ -40,32 +54,29 @@ public class WorldMap {
 	{
 		// TODO load a random map depending on maze config.
 		
-		// XXX load depending on back direction
-		TiledMap mapAsset;
+		int dirInv = (direction + 2) % 4;
 		
-		if(direction < 0){
-			mapAsset = findMap(0xf, 0xf);
-		}else{
-			
-			int dirInv = (direction + 2) % 4;
-			
-			int requiredMask = MapAnalyser.directionToMask(dirInv);
-			
-			mapAsset = findMap(requiredMask, 0xf);
-		}
+		int requiredMask = MapAnalyser.directionToMask(dirInv);
 		
-		// XXX demo map
+		TiledMap mapAsset = findMap(requiredMask, 0xf);
+		
+		return loadTile(x, y, mapAsset);
+	}
+	
+
+	private WorldTile loadTile(int x, int y, TiledMap mapAsset) {
+		
 		WorldTile worldTile = new WorldTile(game);
 		worldTile.x = x;
 		worldTile.y = y;
+		
+		cells[y*w+x] = worldTile;
 		
 		worldTile.map = MapUtils.copyMap(mapAsset, false);
 		worldTile.map.getLayers().add(MapUtils.copyLayer((TiledMapTileLayer)mapAsset.getLayers().get(0)));
 		worldTile.loadCollisions((TiledMapTileLayer)mapAsset.getLayers().get(0));
 		worldTile.load((TiledMapTileLayer)mapAsset.getLayers().get(1));
 		
-		int mapCode = MapAnalyser.analyse(worldTile.getGrid());
-		System.out.println(MapAnalyser.asString(mapCode));
 		return worldTile;
 	}
 
@@ -87,7 +98,7 @@ public class WorldMap {
 
 	public WorldTile getInitTile() {
 		
-		return getTile(0, GameSettings.MAP_HEIGHT/2, -1);
+		return getTile(initX, initY);
 	}
 	
 }

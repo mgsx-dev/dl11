@@ -28,6 +28,8 @@ allprojects {
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.0'
         junitVersion = '4.12'
+        typingLabelVersion = '1.2.0'
+		regExodusVersion = '0.1.10'
     }
 
     repositories {
@@ -98,6 +100,9 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
         
+        compile "com.github.tommyettinger:regexodus:$regExodusVersion:sources"
+		compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion:sources"
+        
     }
 }
 
@@ -107,6 +112,7 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
         
         testCompile "junit:junit:$junitVersion"
         testCompile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"

@@ -28,5 +28,8 @@ public class UniControl {
 		return false;
 	}
 
+	public static boolean isActionJustPressed(){
+		return Gdx.input.isKeyJustPressed(Input.Keys.X);
+	}
 
 }
