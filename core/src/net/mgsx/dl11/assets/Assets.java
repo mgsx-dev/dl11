@@ -1,7 +1,6 @@
 package net.mgsx.dl11.assets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -29,8 +28,10 @@ public class Assets {
 			loadMap("maps/map" + (i+1) + ".tmx");
 		}
 		*/
-		for(FileHandle file : Gdx.files.internal("maps").list()){
-			if(file.extension().equals("tmx")) loadMap(file.path());
+		
+		
+		for(String s : Gdx.files.internal("maps.txt").readString().split(",")){
+			loadMap("maps/" + s);
 		}
 		
 		initMap = new TmxMapLoader().load("maps/map-init.tmx");

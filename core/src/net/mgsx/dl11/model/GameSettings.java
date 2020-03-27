@@ -41,7 +41,7 @@ public class GameSettings
 	public static void init() {
 		if(DEBUG && arguments.length > 0){
 			try {
-				PropertiesUtils.load(GameSettings.debugOptions, Gdx.files.absolute(arguments[0]).reader());
+				PropertiesUtils.load(GameSettings.debugOptions, Gdx.files.local(arguments[0]).reader());
 			} catch (IOException e) {
 				throw new GdxRuntimeException(e);
 			}
