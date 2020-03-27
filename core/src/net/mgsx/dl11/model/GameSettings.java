@@ -1,6 +1,18 @@
 package net.mgsx.dl11.model;
 
-public class GameSettings {
+import java.io.IOException;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.PropertiesUtils;
+
+public class GameSettings 
+{
+	public static boolean DEBUG = true; // TODO false for prod
+	public static final ObjectMap<String, String> debugOptions = new ObjectMap<String, String>();
+	public static String[] arguments;
+	
 	public static final float HUD_WIDTH = GameSettings.WORLD_WIDTH * 16;
 	public static final float HUD_HEIGHT = GameSettings.WORLD_HEIGHT * 16;
 	
@@ -22,7 +34,18 @@ public class GameSettings {
 	
 	public static int DRONE_DAMAGES = 1;
 	public static int NEXT_TILE_DAMAGES = 1;
+	
 	public static final float WORLD_WIDTH = 24; //768;
 	public static final float WORLD_HEIGHT = 18; //576;
 	
+	public static void init() {
+		if(DEBUG && arguments.length > 0){
+			try {
+				PropertiesUtils.load(GameSettings.debugOptions, Gdx.files.absolute(arguments[0]).reader());
+			} catch (IOException e) {
+				throw new GdxRuntimeException(e);
+			}
+		}
+	}
+
 }

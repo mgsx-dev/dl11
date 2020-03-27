@@ -1,6 +1,7 @@
 package net.mgsx.dl11.assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import net.mgsx.dl11.utils.MapAnalyser;
 
@@ -21,8 +23,14 @@ public class Assets {
 	public final TiledMap initMap, lastMap;
 	
 	public Assets() {
+		
+		/*
 		for(int i=0 ; i<4 ; i++){
 			loadMap("maps/map" + (i+1) + ".tmx");
+		}
+		*/
+		for(FileHandle file : Gdx.files.internal("maps").list()){
+			if(file.extension().equals("tmx")) loadMap(file.path());
 		}
 		
 		initMap = new TmxMapLoader().load("maps/map-init.tmx");
@@ -39,6 +47,7 @@ public class Assets {
 
 	private void loadMap(String filename) {
 		MapDesc md = new MapDesc();
+		md.name = filename;
 		md.map = new TmxMapLoader().load(filename);
 		md.mask = MapAnalyser.analyse(md.map);
 		maps.add(md);
@@ -73,5 +82,14 @@ public class Assets {
 
 	public TextureRegion getLifeRegion() {
 		return getMedPackRegion();
+	}
+
+	public TiledMap getMap(String name) {
+		for(MapDesc map : maps){
+			if(map.name.equals(name)){
+				return map.map;
+			}
+		}
+		throw new GdxRuntimeException("map not found: " + name);
 	}
 }

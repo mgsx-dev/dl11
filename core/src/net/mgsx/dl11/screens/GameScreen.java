@@ -55,7 +55,7 @@ public class GameScreen extends StageScreen implements StoryHandler
 		
 		worldTile.reset();
 		
-		worldTile.spawnCar();
+		if(worldTile.isFirstTile) worldTile.spawnCar();
 		
 		worldTile.getActors(entitiesGroup);
 		
@@ -69,6 +69,7 @@ public class GameScreen extends StageScreen implements StoryHandler
 	
 	@Override
 	public void spawnText(String text){
+		if(GameSettings.debugOptions.containsKey("skipText")) return;
 		locked = true;
 		Dialogs.spawnInfo(stage, text, Align.top, ()->unlock());
 	}
@@ -98,7 +99,7 @@ public class GameScreen extends StageScreen implements StoryHandler
 			worldTile.update(gameDelta);
 		}
 		
-		if(nextWorldTile == null && worldTile.exiting){
+		if(nextWorldTile == null && worldTile.exiting && !GameSettings.debugOptions.containsKey("map")){
 			// TODO paint in FBO for transitions ?
 
 			int dir = worldTile.exitDirection;

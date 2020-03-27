@@ -97,7 +97,12 @@ public class WorldMap {
 	}
 
 	public WorldTile getInitTile() {
-		
+		String debugMap = GameSettings.debugOptions.get("map");
+		if(debugMap != null){
+			WorldTile tile = loadTile(w/2, h/2, Assets.i.getMap(debugMap));
+			// tile.isFirstTile = true;
+			return tile;
+		}
 		return getTile(initX, initY);
 	}
 	

@@ -186,22 +186,18 @@ public class WorldTile {
 			if(!noInput){
 				float heroRadius = .5f;
 				if(e.position.x <= heroRadius){
-					System.out.println("out left");
 					exitDirection = MazeCell.WEST;
 					exiting = true;
 				}
 				if(e.position.x >= width - heroRadius){
-					System.out.println("out right");
 					exitDirection = MazeCell.EAST;
 					exiting = true;
 				}
 				if(e.position.y <= heroRadius){
-					System.out.println("out down");
 					exitDirection = MazeCell.SOUTH;
 					exiting = true;
 				}
 				if(e.position.y >= height - heroRadius){
-					System.out.println("out up");
 					exitDirection = MazeCell.NORTH;
 					exiting = true;
 				}
