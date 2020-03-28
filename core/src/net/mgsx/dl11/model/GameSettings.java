@@ -49,6 +49,9 @@ public class GameSettings
 	
 	public static float TILE_TRANSITION_SPEED = 3f;
 	
+	public static int BONUS_RESPAWN_TICKS = 5;
+
+	
 	public static float MUSIC_VOLUME = 1f;
 	public static float SFX_VOLUME = 1f;
 	

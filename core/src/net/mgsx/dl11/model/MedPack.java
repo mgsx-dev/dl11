@@ -36,8 +36,7 @@ public class MedPack extends Bonus {
 	@Override
 	public boolean aquire(GameState game) {
 		if(game.heroLife < GameSettings.HERO_LIFE_MAX){
-			active = false;
-			actor.setVisible(false); // TODO set virtual timeout for respawn
+			unspawn(game);
 			game.heroLife += GameSettings.MEDPACK_LIFE;
 			Assets.i.audio.playPickupMedpack();
 			return true;

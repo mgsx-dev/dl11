@@ -182,9 +182,12 @@ public class GameScreen extends StageScreen implements StoryHandler
 					System.out.println("enter map: " + nextWorldTile.name);
 				}
 				
-				nextWorldTile.getActors(entitiesGroup);
+				game.ticks++;
 				
 				nextWorldTile.setEntering(dirInv);
+				
+				nextWorldTile.getActors(entitiesGroup);
+				
 				
 				worldTile = nextWorldTile;
 				nextWorldTile = null;

@@ -149,6 +149,12 @@ public class WorldTile {
 		
 		this.hero.controlEnabled = false;
 		
+		for(Entity e : entities){
+			if(e instanceof Bonus){
+				((Bonus)e).respawn(game);
+			}
+		}
+		
 		entering = true;
 	}
 	

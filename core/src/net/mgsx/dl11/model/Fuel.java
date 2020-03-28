@@ -36,10 +36,8 @@ public class Fuel extends Bonus {
 	@Override
 	public boolean aquire(GameState game) {
 		if(game.heroFuel < GameSettings.HERO_FUEL_MAX){
-			active = false;
-			actor.setVisible(false); // TODO set virtual timeout for respawn
+			unspawn(game);
 			game.heroFuel++;
-			Assets.i.audio.playPickupFuel();
 			Assets.i.audio.playPickupFuel();
 			return true;
 		}else{
