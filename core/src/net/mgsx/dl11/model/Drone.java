@@ -71,6 +71,13 @@ public class Drone extends Entity {
 		return false;
 	}
 	
+	public boolean isFiring() {
+		for(Laser laser : lasers){
+			if(laser.state == State.FIRE) return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void update(float delta) {
 		
@@ -135,5 +142,6 @@ public class Drone extends Entity {
 			laser.update(position, delta);
 		}
 	}
+
 
 }

@@ -1,5 +1,7 @@
 package net.mgsx.dl11.model;
 
+import net.mgsx.dl11.assets.Assets;
+
 public class Story {
 
 	// TODO parler du héro, qu'il suporte plus les radiations que les autres...
@@ -39,6 +41,7 @@ public class Story {
 					game.visitedLastTile = true;
 					game.storyHandler.spawnText("I found the shelter but i need to bring back the RV now...");
 				}
+				Assets.i.audio.playLastTileNoCar(); // TODO each time or first time only ?
 			}
 		}else{
 			if(!game.changedMapWithCar){
@@ -49,6 +52,8 @@ public class Story {
 			if(worldTile.isLastTile){
 				game.gameOver = true;
 				game.storyHandler.spawnText("I made it!");
+				Assets.i.audio.playMusicOutro();
+				Assets.i.audio.playLastTileWithCar();
 			}
 		}
 	}
@@ -79,11 +84,11 @@ public class Story {
 	}
 
 	public static void enteringCar(GameState game) {
-		if(!game.enteredCarWithFuel){
+		if(!game.enteredCarWithFuel && game.carFuel > 0){
 			game.enteredCarWithFuel = true;
 			game.storyHandler.spawnText("I fill up the tank now we can move to the target point.\nPRESS X TO EXIT THE CAR");
 		}
-		if(!game.enteredCarWithoutFuel){
+		if(!game.enteredCarWithoutFuel && game.carFuel <= 0){
 			game.enteredCarWithoutFuel = true;
 			game.storyHandler.spawnText("Tank is empty, i need to find some fuel.\nPRESS X TO EXIT THE CAR");
 		}
@@ -97,6 +102,8 @@ public class Story {
 		if(!game.gameOver){
 			game.gameOver = true;
 			game.storyHandler.spawnText("I failed...");
+			Assets.i.audio.playHeroDead();
+			Assets.i.audio.playMusicFail();
 		}
 	}
 	

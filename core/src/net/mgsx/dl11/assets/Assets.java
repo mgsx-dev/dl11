@@ -23,7 +23,11 @@ public class Assets {
 	
 	public final Array<Array<MapDesc>> mapsByMask = new Array<Array<MapDesc>>();
 	
+	public final Audio audio;
+	
 	public Assets() {
+		
+		audio = new Audio();
 		
 		/*
 		for(int i=0 ; i<4 ; i++){

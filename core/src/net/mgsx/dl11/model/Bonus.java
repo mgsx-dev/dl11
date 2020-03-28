@@ -10,6 +10,6 @@ abstract public class Bonus extends Entity{
 
 	abstract public boolean canBeAquired(GameState game);
 
-	abstract public void aquire(GameState game);
+	abstract public boolean aquire(GameState game);
 
 }

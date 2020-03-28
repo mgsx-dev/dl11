@@ -48,6 +48,7 @@ public class Hero extends Entity
 			if(blinkTimeout <= 0){
 				blinkTimeout = 3;
 				game.heroLife -= GameSettings.DRONE_DAMAGES;
+				Assets.i.audio.playHeroHurtByDrone();
 			}
 		}
 		
@@ -55,6 +56,7 @@ public class Hero extends Entity
 			blinkTimeout -= delta;
 			if(blinkTimeout <= 0){
 				// ? sound
+				blinkTimeout = 0;
 			}
 		}
 		
@@ -77,13 +79,17 @@ public class Hero extends Entity
 		float speed;
 		if(car != null){
 			if(game.carFuel > 0){
-				speed = 1;
+				speed = GameSettings.CAR_SPEED;
 				game.carFuel -= speed * GameSettings.CAR_FUEL_CONSUMPTION_PER_METER * delta;
+				if(game.carFuel <= 0){
+					game.carFuel = 0;
+					Assets.i.audio.playCarOff();
+				}
 			}else{
 				speed = 0;
 			}
 		}else{
-			speed = 6;
+			speed = GameSettings.HERO_SPEED;
 		}
 		
 		
@@ -91,7 +97,7 @@ public class Hero extends Entity
 		
 		position.mulAdd(velocity, delta);
 		
-		
+		// TODO remove color changes
 		if(world.clamp(this)){
 			sprite.setColor(Color.GOLD);
 		}else{

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
+import net.mgsx.dl11.assets.Assets;
 import net.mgsx.dl11.maze.MazeCell;
 import net.mgsx.dl11.utils.Grid2D;
 import net.mgsx.dl11.utils.MapAnalyser;
@@ -165,8 +166,9 @@ public class WorldTile {
 				Bonus b = (Bonus)e2;
 				if(hero.car == null && b.canBeAquired(game)){
 					if(hero.position.dst(e2.position) < 1){
-						b.aquire(game);
-						Story.pickupBonus(game, b);
+						if(b.aquire(game)){
+							Story.pickupBonus(game, b);
+						}
 					}
 				}
 			}
@@ -186,9 +188,21 @@ public class WorldTile {
 			e.update(delta);
 		}
 		
+		// compute full state of all drones
+		boolean dronesFiring = false;
+		boolean dronesActive = false;
+		for(Entity e : entities){
+			if(e instanceof Drone){
+				Drone d = (Drone)e;
+				// XXX if(d.isFiringPlayer())
+				dronesFiring |= d.isFiring();
+				dronesActive |= d.active;
+			}
+		}
+		
+		Assets.i.audio.playDroneStates(dronesFiring, dronesActive);
+		
 		Hero e = hero;
-		
-		
 		
 		if(entering){
 			float heroRadius = .6f; // XXX extra size
@@ -232,6 +246,12 @@ public class WorldTile {
 						
 						Story.enteringCar(game);
 						
+						if(game.carFuel > 0){
+							Assets.i.audio.playMusicCar();
+						}else{
+							Assets.i.audio.playCarOff();
+						}
+						
 					}else if(exitingCar && !collideWithCar){
 						exitingCar = false;
 					}
@@ -244,6 +264,9 @@ public class WorldTile {
 						hero.actor.toFront();
 						exitingCar = true;
 						Story.exitingCar(game);
+						
+						Assets.i.audio.playMusicHero();
+						Assets.i.audio.playExitingCar();
 					}
 				}
 			}

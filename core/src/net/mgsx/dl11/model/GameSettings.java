@@ -23,6 +23,7 @@ public class GameSettings
 	
 	public static int HERO_LIFE_INIT = 5; // XXX
 	public static int HERO_LIFE_MAX = 10;
+	public static int HERO_LIFE_ALARM = 3;
 	
 	public static int HERO_FUEL_MAX = 10;
 	public static int HERO_FUEL_INIT = 0; // XXX
@@ -43,6 +44,12 @@ public class GameSettings
 	public static float MAZE_WALLS_RATE = .4f;
 	
 	public static boolean DISPLAY_UNVISITED_MAZE_CELL = false;
+	public static float CAR_SPEED = 1;
+	public static float HERO_SPEED = 6;
+	
+	public static float MUSIC_VOLUME = 1f;
+	public static float SFX_VOLUME = 1f;
+	
 	
 	public static final float WORLD_WIDTH = 24; //768;
 	public static final float WORLD_HEIGHT = 18; //576;

@@ -26,10 +26,19 @@ public class MenuScreen extends StageScreen {
 		root.add(new Label("Anno Bellum 239", skin, "title")).row();
 		root.add("CatWired - kAy mOttO - MGSX - Toonguila").row();
 		
-		root.add(UI.onChange(UI.blinkButton("Press X to start"), event->DL11Game.i().setScreen(new IntroScreen())))
+		root.add(UI.onChange(UI.blinkButton("Press X to start"), event->startGame()))
 		.padTop(30).row();
-		
-		
+	}
+	
+	private void startGame(){
+		Assets.i.audio.playMenuButton();
+		DL11Game.i().setScreen(new IntroScreen());
+	}
+	
+	@Override
+	public void show() {
+		Assets.i.audio.playMusicMenu();
+		super.show();
 	}
 	
 	@Override

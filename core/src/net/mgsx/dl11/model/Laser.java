@@ -54,6 +54,7 @@ public class Laser {
 			if(playerOn){
 				state = State.BLINK;
 				time = 0;
+				Assets.i.audio.playDroneDetect();
 			}
 			// actor.setColor(1,0,0, playerOn ? 1 : .3f);
 			actor.setColor(1,0,0,.3f);

@@ -92,6 +92,12 @@ public class GameScreen extends StageScreen implements StoryHandler
 	}
 	
 	@Override
+	public void show() {
+		Assets.i.audio.playMusicHero();
+		super.show();
+	}
+	
+	@Override
 	public void spawnText(String text){
 		if(GameSettings.debugOptions.containsKey("skipText")) return;
 		locked = true;
@@ -111,9 +117,11 @@ public class GameScreen extends StageScreen implements StoryHandler
 			if(renderMaze){
 				renderMaze = false;
 				locked = false;
+				Assets.i.audio.playMapClose();
 			}else if(!locked){ // deny show map when messages
 				renderMaze = true;
 				locked = true;
+				Assets.i.audio.playMapOpen();
 			}
 		}
 		
@@ -145,6 +153,8 @@ public class GameScreen extends StageScreen implements StoryHandler
 			
 			// XXX temporary test, should'nt happens with real maps
 			if(nextWorldTile != null){
+				
+				Assets.i.audio.playHeroHurtByRadiation();
 				
 				nextWorldTile.transfert(worldTile);
 				
@@ -218,7 +228,10 @@ public class GameScreen extends StageScreen implements StoryHandler
 			mazeRenderer.render();
 		}
 		
+		Assets.i.audio.playState(game);
+		
 		if(game.gameOver && !locked){
+			Assets.i.audio.clearState();
 			DL11Game.i().setScreen(new MenuScreen());
 		}
 	}

@@ -19,6 +19,7 @@ public class Dialogs {
 
 	private static class DialogState{
 		boolean finished = false;
+		boolean skipped = false;
 	}
 	
 	public static void spawnInfo(Stage stage, String text, int align, Runnable endCallback) {
@@ -26,7 +27,7 @@ public class Dialogs {
 		
 		DialogState state = new DialogState();
 		
-		text += "\n{BLINK=gray;red;8;0.5}Press X{ENDBLINK}";
+		text += "\n{BLINK=gray;red;8;0.5}Press X{ENDBLINK}{EVENT=hint}";
 		
 		Table alert = new Table(skin);
 		alert.setBackground(skin.newDrawable("white", new Color(0,0,0,1)));
@@ -40,9 +41,11 @@ public class Dialogs {
 			public void act(float delta) {
 				if(UniControl.isActionJustPressed()){
 					if(!state.finished){
+						state.skipped = true;
 						label.skipToTheEnd();
 					}
 					else if(!hasActions()){
+						// TODO SFX closing ?
 						addAction(Actions.sequence(Actions.alpha(0, .3f), Actions.run(endCallback), Actions.removeActor()));
 					}
 					
@@ -60,6 +63,24 @@ public class Dialogs {
 			public void end() {
 				state.finished = true;
 				super.end();
+			}
+			@Override
+			public void event(String event) {
+				if(event.equals("hint")){
+					Assets.i.audio.playTypingHint();
+				}
+			}
+			@Override
+			public void onChar(Character ch) {
+				if(!state.skipped){
+					if(ch == ' '){
+						Assets.i.audio.playTypingBlank();
+					}else if(ch == '\n'){
+						Assets.i.audio.playTypingLine();
+					}else{
+						Assets.i.audio.playTypingChar();
+					}
+				}
 			}
 		});
 		
