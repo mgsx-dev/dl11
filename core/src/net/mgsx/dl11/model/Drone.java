@@ -26,17 +26,19 @@ public class Drone extends Entity {
 	public boolean active = true;
 	
 	private final Array<Laser> lasers = new Array<Laser>();
+	private boolean rotative;
 	
-	public Drone(WorldTile world, int initX, int initY, boolean horizontal, boolean vertical) {
+	public Drone(WorldTile world, int initX, int initY, boolean horizontal, boolean vertical, boolean rotative) {
 		super(initX, initY);
 		this.world = world;
 		this.horizontal = horizontal;
 		this.vertical = vertical;
+		this.rotative = rotative;
 		
 		Group group = new Group();
 		actor = group;
 		
-		sprite = new Image(Assets.i.getDroneRegion(horizontal, vertical));
+		sprite = new Image(Assets.i.getDroneRegion(horizontal, vertical, rotative));
 		sprite.setSize(1, 1);
 		sprite.setPosition(0, 0, Align.center);
 		
@@ -88,8 +90,14 @@ public class Drone extends Entity {
 		boolean hurtPlayer = false;
 		for(Laser laser : lasers){
 			hurtPlayer |= laser.playerOn = world.rayCast(laser.wallPosition, this.position, laser.direction, true);
-			
 		}
+		
+		if(GameSettings.ALL_LASERS_FIRING && hurtPlayer){
+			for(Laser laser : lasers){
+				laser.playerOn = true;
+			}
+		}
+		
 		if(movable){
 			
 			// XXX timeoutMove -= delta;
@@ -123,6 +131,7 @@ public class Drone extends Entity {
 		// TODO set velocity if needed ...
 		
 		for(Laser laser : lasers){
+			laser.rotative = rotative;
 			laser.update(position, delta);
 		}
 	}

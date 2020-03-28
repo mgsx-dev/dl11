@@ -35,6 +35,10 @@ public class GameSettings
 	public static int DRONE_DAMAGES = 1;
 	public static int NEXT_TILE_DAMAGES = 1;
 	
+	public static float LASER_ROTATION_SPEED = 20;
+	
+	public static boolean ALL_LASERS_FIRING = true;
+	
 	public static final float WORLD_WIDTH = 24; //768;
 	public static final float WORLD_HEIGHT = 18; //576;
 	

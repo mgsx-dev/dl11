@@ -17,6 +17,7 @@ public class Laser {
 	}
 	public State state;
 	private float time;
+	public boolean rotative;
 	
 	public Laser() {
 		actor = new Image(Assets.i.getWhitePixel());
@@ -25,6 +26,8 @@ public class Laser {
 	
 	public void update(Vector2 center, float delta) {
 		time += delta;
+		
+		if(rotative) direction.rotate(delta * GameSettings.LASER_ROTATION_SPEED);
 		
 		// update state
 		if(state == State.BLINK){

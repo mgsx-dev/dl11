@@ -88,17 +88,32 @@ public class WorldTile {
 
 	private void createEntity(int x, int y, int id) {
 		if(id == 2){
-			entities.add(new Drone(this, x, y, false, false));
+			entities.add(new Drone(this, x, y, false, false, false));
 		}
 		if(id == 3){
-			entities.add(new Drone(this, x, y, true, false));
+			entities.add(new Drone(this, x, y, true, false, false));
 		}
 		if(id == 6){
-			entities.add(new Drone(this, x, y, false, true));
+			entities.add(new Drone(this, x, y, false, true, false));
 		}
 		if(id == 7){
-			entities.add(new Drone(this, x, y, true, true));
+			entities.add(new Drone(this, x, y, true, true, false));
 		}
+		
+		if(id == 10){
+			entities.add(new Drone(this, x, y, false, false, true));
+		}
+		if(id == 11){
+			entities.add(new Drone(this, x, y, true, false, true));
+		}
+		if(id == 14){
+			entities.add(new Drone(this, x, y, false, true, true));
+		}
+		if(id == 15){
+			entities.add(new Drone(this, x, y, true, true, true));
+		}
+
+		
 		if(id == 8){
 			entities.add(hero = new Hero(game, this, x, y));
 		}

@@ -62,7 +62,13 @@ public class Assets {
 		return skin.getRegion("white");
 	}
 	
-	public TextureRegion getDroneRegion(boolean horizontal, boolean vertical) {
+	public TextureRegion getDroneRegion(boolean horizontal, boolean vertical, boolean rotative) {
+		if(rotative){
+			if(horizontal && vertical) return getTile(15);
+			if(horizontal) return getTile(11);
+			if(vertical) return getTile(14);
+			return getTile(10);
+		}
 		if(horizontal && vertical) return getTile(7);
 		if(horizontal) return getTile(3);
 		if(vertical) return getTile(6);
