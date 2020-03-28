@@ -115,14 +115,18 @@ public class Audio {
 	
 	public void clearState() {
 		lifeAlarm.stop();
-		dronesFire.stop();
-		dronesActive.stop();
+		clearDrones();
 	}
 	
 	public void playDroneStates(boolean firing, boolean activated){
 		// stack SFXs
 		dronesFire.setActive(firing, 1);
 		dronesActive.setActive(activated, 1);
+	}
+	
+	public void clearDrones(){
+		dronesFire.stop();
+		dronesActive.stop();
 	}
 	
 	public void playDroneDetect(){

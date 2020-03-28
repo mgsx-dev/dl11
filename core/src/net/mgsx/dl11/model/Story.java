@@ -33,7 +33,7 @@ public class Story {
 		if(worldTile.hero.car == null){
 			if(!game.changedMapWithoutCar){
 				game.changedMapWithoutCar = true;
-				String text = "Radiation hurts me, i should get back to the car...";
+				String text = "Radiation hurts me, i shouldn't walk around too much...";
 				game.storyHandler.spawnText(text);
 			}
 			if(worldTile.isLastTile){

@@ -52,6 +52,7 @@ public class WorldTile {
 	public boolean isLastTile;
 	public boolean isFirstTile;
 	public boolean visited;
+	public String name;
 	
 	
 	public WorldTile(GameState game) {
@@ -146,8 +147,6 @@ public class WorldTile {
 		
 		this.hero.velocity.setZero();
 		
-		System.out.println(this.hero.position);
-		
 		this.hero.controlEnabled = false;
 		
 		entering = true;
@@ -188,19 +187,21 @@ public class WorldTile {
 			e.update(delta);
 		}
 		
-		// compute full state of all drones
-		boolean dronesFiring = false;
-		boolean dronesActive = false;
-		for(Entity e : entities){
-			if(e instanceof Drone){
-				Drone d = (Drone)e;
-				// XXX if(d.isFiringPlayer())
-				dronesFiring |= d.isFiring();
-				dronesActive |= d.active;
+		if(active){
+			// compute full state of all drones
+			boolean dronesFiring = false;
+			boolean dronesActive = false;
+			for(Entity e : entities){
+				if(e instanceof Drone){
+					Drone d = (Drone)e;
+					// XXX if(d.isFiringPlayer())
+					dronesFiring |= d.isFiring();
+					dronesActive |= d.active;
+				}
 			}
+			
+			Assets.i.audio.playDroneStates(dronesFiring, dronesActive);
 		}
-		
-		Assets.i.audio.playDroneStates(dronesFiring, dronesActive);
 		
 		Hero e = hero;
 		
@@ -209,7 +210,6 @@ public class WorldTile {
 
 			// TODO some anims
 			if(e.position.x > heroRadius && e.position.x < width - heroRadius && e.position.y > heroRadius && e.position.y < height - heroRadius){
-				System.out.println("in");
 				entering = false;
 			}
 		}else{

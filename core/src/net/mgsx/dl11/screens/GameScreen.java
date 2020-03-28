@@ -158,10 +158,18 @@ public class GameScreen extends StageScreen implements StoryHandler
 				
 				nextWorldTile.transfert(worldTile);
 				
+				Assets.i.audio.clearDrones();
+				
+				worldTile.active = false;
+				nextWorldTile.active = false;
+				
 				worldTile.reset();
 				
 				entitiesGroup.clearChildren();
 				
+				if(GameSettings.DEBUG){
+					System.out.println("enter map: " + nextWorldTile.name);
+				}
 				
 				nextWorldTile.getActors(entitiesGroup);
 				

@@ -36,9 +36,9 @@ public class WorldMap {
 		lastX = w-1;
 		lastY = h/2; // TODO random ?
 		
-		WorldTile initTile = loadTile(initX, initY, Assets.i.initMap);
+		WorldTile initTile = loadTile(initX, initY, Assets.i.initMap, "initialMap");
 		initTile.isFirstTile = true;
-		WorldTile lastTile = loadTile(lastX, lastY, Assets.i.lastMap);
+		WorldTile lastTile = loadTile(lastX, lastY, Assets.i.lastMap, "lastMap");
 		lastTile.isLastTile = true;
 		
 		MazeGenerator generator = new MazeGenerator();
@@ -62,7 +62,8 @@ public class WorldMap {
 					if(!mc.walls[MazeCell.EAST]) mask |= MapAnalyser.EAST_MASK;
 					if(!mc.walls[MazeCell.WEST]) mask |= MapAnalyser.WEST_MASK;
 					
-					loadTile(x, y, Assets.i.mapsByMask.get(mask).random().map);
+					MapDesc md = Assets.i.mapsByMask.get(mask).random();
+					loadTile(x, y, md.map, md.name);
 				}
 			}
 		}
@@ -94,13 +95,14 @@ public class WorldMap {
 		
 		TiledMap mapAsset = findMap(requiredMask, 0xf);
 		
-		return loadTile(x, y, mapAsset);
+		return loadTile(x, y, mapAsset, "not defined");
 	}
 	
 
-	private WorldTile loadTile(int x, int y, TiledMap mapAsset) {
+	private WorldTile loadTile(int x, int y, TiledMap mapAsset, String name) {
 		
 		WorldTile worldTile = new WorldTile(game);
+		worldTile.name = name;
 		worldTile.x = x;
 		worldTile.y = y;
 		
@@ -133,7 +135,7 @@ public class WorldMap {
 	public WorldTile getInitTile() {
 		String debugMap = GameSettings.debugOptions.get("map");
 		if(debugMap != null){
-			WorldTile tile = loadTile(w/2, h/2, Assets.i.getMap(debugMap));
+			WorldTile tile = loadTile(w/2, h/2, Assets.i.getMap(debugMap), debugMap);
 			// tile.isFirstTile = true;
 			return tile;
 		}
