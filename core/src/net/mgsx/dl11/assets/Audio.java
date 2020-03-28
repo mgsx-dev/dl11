@@ -21,7 +21,7 @@ public class Audio {
 	
 	public Audio() {
 		lifeAlarm = new SoundLooper(getSFX("needmed"));
-		dronesFire = new SoundLooper(getSFX("tir-1")); // TODO ?
+		dronesFire = new SoundLooper(getSFX("beam"));
 		dronesActive = new SoundLooper(getSFX("laserdetection"));
 	}
 	
@@ -129,6 +129,10 @@ public class Audio {
 		dronesActive.stop();
 	}
 	
+	public void playDroneFiring(){
+		playSFX("tir-2", 1);
+	}
+	
 	public void playDroneDetect(){
 		playSFX("lasersurfaisceau", 1);
 	}
@@ -137,7 +141,7 @@ public class Audio {
 		playSFX("lasertouche", 1);
 	}
 	public void playHeroHurtByRadiation(){
-		playSFX("geiger", 1);
+		playSFX("radiation", 1);
 	}
 	public void playHeroDead(){
 		playSFX("failed", 1);

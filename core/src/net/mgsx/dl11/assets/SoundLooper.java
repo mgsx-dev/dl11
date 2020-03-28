@@ -14,16 +14,18 @@ public class SoundLooper {
 		this.sound = sound;
 	}
 	
-	public void setActive(boolean active, float volume){
+	public boolean setActive(boolean active, float volume){
 		if(active && !this.active){
 			this.active = true;
 			soundID = sound.loop(volume * GameSettings.SFX_VOLUME);
+			return true;
 		}
 		else if(!active && this.active){
 			this.active = false;
 			sound.stop(soundID);
 			soundID = -1;
 		}
+		return false;
 	}
 	
 	public void stop(){

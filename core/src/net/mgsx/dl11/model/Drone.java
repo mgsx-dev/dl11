@@ -105,7 +105,7 @@ public class Drone extends Entity {
 				laser.playerOn = true;
 			}
 		}
-		
+
 		if(movable){
 			
 			// XXX timeoutMove -= delta;
@@ -138,9 +138,18 @@ public class Drone extends Entity {
 		actor.setPosition(position.x, position.y);
 		// TODO set velocity if needed ...
 		
+		boolean wasFiring = false;
+		for(Laser laser : lasers){
+			wasFiring |= laser.state == State.FIRE;
+		}
+		boolean isFiring = false;
 		for(Laser laser : lasers){
 			laser.rotative = rotative;
 			laser.update(position, delta);
+			isFiring |= laser.state == State.FIRE;
+		}
+		if(!wasFiring && isFiring){
+			Assets.i.audio.playDroneFiring();
 		}
 	}
 
