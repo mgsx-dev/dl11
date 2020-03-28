@@ -84,6 +84,7 @@ public class Drone extends Entity {
 		if(!active){
 			actor.setPosition(position.x, position.y);
 			for(Laser laser : lasers){
+				laser.reset();
 				laser.actor.setVisible(false);
 			}
 			return;
