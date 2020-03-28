@@ -32,4 +32,8 @@ public class UniControl {
 		return Gdx.input.isKeyJustPressed(Input.Keys.X);
 	}
 
+	public static boolean isOptionJustPressed() {
+		return Gdx.input.isKeyJustPressed(Input.Keys.C);
+	}
+
 }

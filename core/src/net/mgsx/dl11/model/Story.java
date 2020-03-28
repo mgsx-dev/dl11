@@ -2,6 +2,9 @@ package net.mgsx.dl11.model;
 
 public class Story {
 
+	// TODO parler du héro, qu'il suporte plus les radiations que les autres...
+	// TODO parler de la minimap (key C)
+	
 	public static String introText() {
 		String text = "";
 		text += "AB. 239\n";

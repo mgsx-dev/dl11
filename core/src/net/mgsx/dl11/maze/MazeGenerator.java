@@ -9,6 +9,11 @@ public class MazeGenerator
 	
 	public Maze generate(int width, int height){
 		final Maze maze = new Maze(width, height);
+		generate(maze);
+		return maze;
+	}
+	
+	public void generate(Maze maze){
 		
 		// TODO algo DFS : https://fr.wikipedia.org/wiki/Mod%C3%A9lisation_math%C3%A9matique_de_labyrinthe
 		
@@ -38,7 +43,6 @@ public class MazeGenerator
 			
 		}while(stack.peek() != stack.first());
 		
-		return maze;
 	}
 	
 	public Maze generate(int width, int height, float wallRate){

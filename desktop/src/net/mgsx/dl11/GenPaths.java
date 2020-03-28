@@ -9,7 +9,7 @@ public class GenPaths {
 	public static void main(String[] args) throws IOException {
 		String data = "";
 		for(String s : new File("maps").list()){
-			if(s.endsWith(".tmx")){
+			if(s.endsWith(".tmx") && s.startsWith("map")){
 				System.out.println(s);
 				if(!data.isEmpty()) data += ",";
 				data += s;

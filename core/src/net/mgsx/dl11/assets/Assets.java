@@ -21,6 +21,8 @@ public class Assets {
 	
 	public final TiledMap initMap, lastMap;
 	
+	public final Array<Array<MapDesc>> mapsByMask = new Array<Array<MapDesc>>();
+	
 	public Assets() {
 		
 		/*
@@ -29,13 +31,16 @@ public class Assets {
 		}
 		*/
 		
+		for(int i=0 ; i <= 16 ; i++){
+			mapsByMask.add(new Array<MapDesc>());
+		}
 		
 		for(String s : Gdx.files.internal("maps.txt").readString().split(",")){
 			loadMap("maps/" + s);
 		}
 		
-		initMap = new TmxMapLoader().load("maps/map-init.tmx");
-		lastMap  = new TmxMapLoader().load("maps/map-last.tmx");
+		initMap = new TmxMapLoader().load("maps/misc-map-init.tmx");
+		lastMap  = new TmxMapLoader().load("maps/misc-map-last.tmx");
 		
 		skin = new Skin(Gdx.files.internal("skins/game-skin.json"));
 		skin.getRegion("white").getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
@@ -52,6 +57,7 @@ public class Assets {
 		md.map = new TmxMapLoader().load(filename);
 		md.mask = MapAnalyser.analyse(md.map);
 		maps.add(md);
+		mapsByMask.get(md.mask).add(md);
 	}
 
 	private TextureRegion getTile(int id) {

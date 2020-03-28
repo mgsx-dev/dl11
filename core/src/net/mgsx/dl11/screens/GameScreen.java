@@ -6,11 +6,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.dl11.DL11Game;
 import net.mgsx.dl11.assets.Assets;
+import net.mgsx.dl11.maze.MazeDrawer;
 import net.mgsx.dl11.model.GameSettings;
 import net.mgsx.dl11.model.GameState;
 import net.mgsx.dl11.model.Story;
@@ -20,6 +22,7 @@ import net.mgsx.dl11.model.WorldTile;
 import net.mgsx.dl11.ui.Dialogs;
 import net.mgsx.dl11.ui.HUD;
 import net.mgsx.dl11.utils.StageScreen;
+import net.mgsx.dl11.utils.UniControl;
 
 public class GameScreen extends StageScreen implements StoryHandler
 {
@@ -37,6 +40,10 @@ public class GameScreen extends StageScreen implements StoryHandler
 	private float fadeOutTime;
 	private Stage gameStage;
 	private boolean locked;
+	private boolean renderMaze;
+	private MazeDrawer mazeRenderer;
+	private float time;
+	private Image frontDrop;
 	
 	public GameScreen() {
 		super(new FitViewport(GameSettings.HUD_WIDTH, GameSettings.HUD_HEIGHT));
@@ -47,11 +54,24 @@ public class GameScreen extends StageScreen implements StoryHandler
 		
 		worldMap = new WorldMap(game, GameSettings.MAP_WIDTH, GameSettings.MAP_HEIGHT);
 		
+		mazeRenderer = new MazeDrawer(worldMap.maze){
+			@Override
+			public Color getCellColor(int x, int y) {
+				WorldTile cell = worldMap.getCell(x, y);
+				if(x == worldTile.x && y == worldTile.y && MathUtils.floor(time * 4) % 2 == 0) return Color.YELLOW;
+				if(x == worldMap.lastX && y == worldMap.lastY) return Color.RED;
+				if(!cell.visited && !GameSettings.DISPLAY_UNVISITED_MAZE_CELL) return null;
+				if(cell.car != null) return Color.GRAY;
+				return super.getCellColor(x, y);
+			}
+		};
+		
 		gameStage.addActor(entitiesGroup = new Group());
 		
 		gameStage.addActor(hud = new HUD(game, Assets.i.skin));
 
 		worldTile = worldMap.getInitTile();
+		worldTile.visited = true;
 		
 		worldTile.reset();
 		
@@ -63,6 +83,10 @@ public class GameScreen extends StageScreen implements StoryHandler
 		worldTile.active = true;
 		
 		mapRenderer = new OrthogonalTiledMapRenderer(worldTile.map, unitScale);
+		
+		frontDrop = new Image(Assets.i.skin.newDrawable("white", Color.BLACK));
+		frontDrop.setFillParent(true);
+		gameStage.addActor(frontDrop);
 		
 		Story.enteringGame(game);
 	}
@@ -80,6 +104,18 @@ public class GameScreen extends StageScreen implements StoryHandler
 	
 	@Override
 	public void render(float delta) {
+		
+		time += delta;
+		
+		if(UniControl.isOptionJustPressed()){
+			if(renderMaze){
+				renderMaze = false;
+				locked = false;
+			}else if(!locked){ // deny show map when messages
+				renderMaze = true;
+				locked = true;
+			}
+		}
 		
 		delta = MathUtils.clamp(delta, 1/120f, 1/30f);
 		
@@ -142,6 +178,8 @@ public class GameScreen extends StageScreen implements StoryHandler
 				}
 				
 				Story.enteringNewTile(game, worldTile);
+
+				worldTile.visited = true;
 			}
 		}
 		
@@ -151,8 +189,13 @@ public class GameScreen extends StageScreen implements StoryHandler
 		gameStage.getViewport().apply();
 		
 		// render map here
+		
 		float lum = isDead ? 1 - fadeOutTime : 1;
-		mapRenderer.getBatch().setColor(lum, lum, lum, 1);
+		if(renderMaze) lum = .3f;
+		frontDrop.getColor().a = 1 - lum;
+		frontDrop.setVisible(lum < 1);
+		
+		mapRenderer.getBatch().setColor(Color.WHITE);
 		mapRenderer.setMap(worldTile.map);
 		mapRenderer.setView((OrthographicCamera)gameStage.getViewport().getCamera());
 		mapRenderer.render();
@@ -170,6 +213,10 @@ public class GameScreen extends StageScreen implements StoryHandler
 		
 		stage.getViewport().apply();
 		super.render(delta);
+		
+		if(renderMaze){
+			mazeRenderer.render();
+		}
 		
 		if(game.gameOver && !locked){
 			DL11Game.i().setScreen(new MenuScreen());

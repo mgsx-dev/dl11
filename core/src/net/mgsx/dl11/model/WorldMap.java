@@ -7,16 +7,21 @@ import com.badlogic.gdx.utils.Array;
 
 import net.mgsx.dl11.assets.Assets;
 import net.mgsx.dl11.assets.MapDesc;
+import net.mgsx.dl11.maze.Maze;
 import net.mgsx.dl11.maze.MazeCell;
+import net.mgsx.dl11.maze.MazeGenerator;
 import net.mgsx.dl11.utils.MapAnalyser;
 import net.mgsx.dl11.utils.MapUtils;
 
 public class WorldMap {
-	private WorldTile [] cells;
-	private int w, h;
-	private GameState game;
-	private final int initX;
-	private final int initY;
+	private final WorldTile [] cells;
+	private final int w, h;
+	private final GameState game;
+	public final int initX;
+	public final int initY;
+	public final int lastX;
+	public final int lastY;
+	public final Maze maze;
 	
 	public WorldMap(GameState game, int w, int h) {
 		super();
@@ -28,10 +33,39 @@ public class WorldMap {
 		initX = 0;
 		initY = h/2;
 		
+		lastX = w-1;
+		lastY = h/2; // TODO random ?
+		
 		WorldTile initTile = loadTile(initX, initY, Assets.i.initMap);
 		initTile.isFirstTile = true;
-		WorldTile lastTile = loadTile(w-1, h/2, Assets.i.lastMap);
+		WorldTile lastTile = loadTile(lastX, lastY, Assets.i.lastMap);
 		lastTile.isLastTile = true;
+		
+		MazeGenerator generator = new MazeGenerator();
+		maze = generator.generate(w, h, 1 - GameSettings.MAZE_WALLS_RATE);
+		
+		maze.removeWall(initX, initY, MazeCell.EAST);
+		maze.removeWall(initX, initY, MazeCell.NORTH);
+		maze.removeWall(initX, initY, MazeCell.SOUTH);
+		
+		maze.removeWall(lastX, lastY, MazeCell.WEST);
+		maze.removeWall(lastX, lastY, MazeCell.NORTH);
+		maze.removeWall(lastX, lastY, MazeCell.SOUTH);
+		
+		for(int y=0 ; y<h ; y++){
+			for(int x=0 ; x<w ; x++){
+				if(cells[y*w+x] == null){
+					MazeCell mc = maze.cell(x, y);
+					int mask = 0;
+					if(!mc.walls[MazeCell.NORTH]) mask |= MapAnalyser.NORTH_MASK;
+					if(!mc.walls[MazeCell.SOUTH]) mask |= MapAnalyser.SOUTH_MASK;
+					if(!mc.walls[MazeCell.EAST]) mask |= MapAnalyser.EAST_MASK;
+					if(!mc.walls[MazeCell.WEST]) mask |= MapAnalyser.WEST_MASK;
+					
+					loadTile(x, y, Assets.i.mapsByMask.get(mask).random().map);
+				}
+			}
+		}
 	}
 
 	private WorldTile getTile(int x, int y){
@@ -104,6 +138,10 @@ public class WorldMap {
 			return tile;
 		}
 		return getTile(initX, initY);
+	}
+
+	public WorldTile getCell(int x, int y) {
+		return cells[y*w+x];
 	}
 	
 }

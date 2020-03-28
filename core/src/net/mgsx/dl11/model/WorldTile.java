@@ -50,6 +50,7 @@ public class WorldTile {
 	public boolean noInput;
 	public boolean isLastTile;
 	public boolean isFirstTile;
+	public boolean visited;
 	
 	
 	public WorldTile(GameState game) {

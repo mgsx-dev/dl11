@@ -27,25 +27,32 @@ public class MazeDrawer implements Disposable {
 	public void render(){
 		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		shapes.setProjectionMatrix(viewport.getCamera().combined);
-		shapes.setColor(Color.ORANGE);
 		shapes.begin(ShapeType.Filled);
 		final float baseSize = .5f;
 		final float wallSize = .4f;
 		for(int y=0 ; y<maze.h ; y++){
 			for(int x=0 ; x<maze.w ; x++){
-				MazeCell cell = maze.cell(x, y);
-				r.setSize(baseSize).setCenter(x + .5f, y + .5f);
-				shapes.rect(r.x, r.y, r.width, r.height);
-				for(int i=0 ; i<4 ; i++){
-					if(!cell.walls[i]){
-						GridPoint2 delta = MazeCell.DELTAS[i];
-						r.setSize(wallSize).setCenter(x + .5f + delta.x * baseSize/2, y + .5f + delta.y*baseSize/2);
-						shapes.rect(r.x, r.y, r.width, r.height);
+				Color color = getCellColor(x, y);
+				if(color != null){
+					shapes.setColor(color);
+					MazeCell cell = maze.cell(x, y);
+					r.setSize(baseSize).setCenter(x + .5f, y + .5f);
+					shapes.rect(r.x, r.y, r.width, r.height);
+					for(int i=0 ; i<4 ; i++){
+						if(!cell.walls[i]){
+							GridPoint2 delta = MazeCell.DELTAS[i];
+							r.setSize(wallSize).setCenter(x + .5f + delta.x * baseSize/2, y + .5f + delta.y*baseSize/2);
+							shapes.rect(r.x, r.y, r.width, r.height);
+						}
 					}
 				}
 			}
 		}
 		shapes.end();
+	}
+
+	public Color getCellColor(int x, int y) {
+		return Color.ORANGE;
 	}
 
 	@Override
