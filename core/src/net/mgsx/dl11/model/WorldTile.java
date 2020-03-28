@@ -249,7 +249,7 @@ public class WorldTile {
 						if(game.carFuel > 0){
 							Assets.i.audio.playMusicCar();
 						}else{
-							Assets.i.audio.playCarOff();
+							Assets.i.audio.playCarNoFioul();
 						}
 						
 					}else if(exitingCar && !collideWithCar){

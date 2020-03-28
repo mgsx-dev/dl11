@@ -20,9 +20,9 @@ public class Audio {
 	private final SoundLooper dronesActive;
 	
 	public Audio() {
-		lifeAlarm = new SoundLooper(getSFX("alarm-1"));
-		dronesFire = new SoundLooper(getSFX("laserlong-10"));
-		dronesActive = new SoundLooper(getSFX("alertlong-1"));
+		lifeAlarm = new SoundLooper(getSFX("needmed"));
+		dronesFire = new SoundLooper(getSFX("tir-1")); // TODO ?
+		dronesActive = new SoundLooper(getSFX("laserdetection"));
 	}
 	
 	public void playMusicMenu(){
@@ -82,31 +82,31 @@ public class Audio {
 	}
 
 	public void playTypingChar(){
-		playSFX("bip-2", 1);
+		playSFX("biplettre", 1);
 	}
 	public void playTypingBlank(){
-		playSFX("bip-3", 1);
+		playSFX("bipespace", 1);
 	}
 	public void playTypingLine(){
-		playSFX("bip-7", 1);
+		playSFX("bipfinligne", 1);
 	}
 	public void playTypingHint(){
-		playSFX("boing-1", 1);
+		playSFX("pressx", 1);
 	}
 
 	
 	public void playMapOpen(){
-		playSFX("boing-2", 1);
+		playSFX("entremap", 1);
 	}
 	public void playMapClose(){
-		playSFX("boing-3", 1);
+		playSFX("sortiemap", 1);
 	}
 	
 	public void playPickupFuel(){
-		playSFX("explose-5", 1);
+		playSFX("fioul", 1);
 	}
 	public void playPickupMedpack(){
-		playSFX("explose-6", 1);
+		playSFX("med", 1);
 	}
 	
 	public void playState(GameState game){
@@ -130,43 +130,42 @@ public class Audio {
 	}
 	
 	public void playDroneDetect(){
-		playSFX("laser-2", 1);
+		playSFX("lasersurfaisceau", 1);
 	}
 	
 	public void playHeroHurtByDrone(){
-		playSFX("explose-6", 1);
+		playSFX("lasertouche", 1);
 	}
 	public void playHeroHurtByRadiation(){
-		playSFX("explose-6", 1);
+		playSFX("geiger", 1);
 	}
 	public void playHeroDead(){
-		playSFX("explose-6", 1);
+		playSFX("failed", 1);
 	}
 	
+	public void playCarNoFioul(){
+		playSFX("nofioul", 1);
+	}
 	
 	
 	public void playMenuButton(){
-		playSFX("explose-6", 1);
-	}
-	
-	public void playCarOff(){
-		playSFX("explose-6", 1);
+		playSFX("start", 1);
 	}
 	
 	public void playBonusDenied(){
-		playSFX("explose-6", 1);
+		playSFX("sacplein", 1);
 	}
 	
 	public void playLastTileNoCar(){
-		playSFX("explose-6", 1);
+		playSFX("lastmapnocar", 1);
 	}
 	
 	public void playLastTileWithCar(){
-		playSFX("explose-6", 1);
+		playSFX("lastmapcar", 1);
 	}
 	
 	public void playExitingCar(){
-		playSFX("explose-6", 1);
+		playSFX("sortiecar", 1);
 	}
 
 }

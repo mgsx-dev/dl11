@@ -83,7 +83,7 @@ public class Hero extends Entity
 				game.carFuel -= speed * GameSettings.CAR_FUEL_CONSUMPTION_PER_METER * delta;
 				if(game.carFuel <= 0){
 					game.carFuel = 0;
-					Assets.i.audio.playCarOff();
+					Assets.i.audio.playCarNoFioul();
 				}
 			}else{
 				speed = 0;
