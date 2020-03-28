@@ -147,21 +147,32 @@ public class GameScreen extends StageScreen implements StoryHandler
 			// TODO paint in FBO for transitions ?
 
 			int dir = worldTile.exitDirection;
-			int dirInv = (dir + 2) % 4;
 
 			nextWorldTile = worldMap.getAdjTile(worldTile, dir);
 			
 			// XXX temporary test, should'nt happens with real maps
 			if(nextWorldTile != null){
 				
-				Assets.i.audio.playHeroHurtByRadiation();
-				
-				nextWorldTile.transfert(worldTile);
-				
 				Assets.i.audio.clearDrones();
 				
 				worldTile.active = false;
 				nextWorldTile.active = false;
+				
+				transition = 0;
+			}
+			
+		}
+		
+		if(nextWorldTile != null){
+			worldTile.noInput = true;
+			// nextWorldTile.update(gameDelta);
+			transition += gameDelta * GameSettings.TILE_TRANSITION_SPEED;
+			if(transition >= 1){
+				
+				int dir = worldTile.exitDirection;
+				int dirInv = (dir + 2) % 4;
+				
+				nextWorldTile.transfert(worldTile);
 				
 				worldTile.reset();
 				
@@ -175,25 +186,25 @@ public class GameScreen extends StageScreen implements StoryHandler
 				
 				nextWorldTile.setEntering(dirInv);
 				
-				transition = 0;
-			}
-			
-		}
-		
-		if(nextWorldTile != null){
-			worldTile.noInput = true;
-			nextWorldTile.update(gameDelta);
-			transition += gameDelta * 1f;
-			if(transition >= 1){
 				worldTile = nextWorldTile;
 				nextWorldTile = null;
-				worldTile.active = true;
+				
 				transition = 1;
 				
 				// only remove life if not in car TODO sauf si on change un peu le gameplay vis à vis de l'histoire.
 				if(worldTile.hero.car == null){
+					Assets.i.audio.playHeroHurtByRadiation();
 					game.heroLife -= GameSettings.NEXT_TILE_DAMAGES;
 				}
+				
+			}
+		}
+		else if(transition > 0){
+			transition -= gameDelta * GameSettings.TILE_TRANSITION_SPEED;
+			if(transition <= 0){
+				transition = 0;
+				
+				worldTile.active = true;
 				
 				Story.enteringNewTile(game, worldTile);
 
@@ -208,7 +219,7 @@ public class GameScreen extends StageScreen implements StoryHandler
 		
 		// render map here
 		
-		float lum = isDead ? 1 - fadeOutTime : 1;
+		float lum = isDead ? 1 - fadeOutTime : 1 - transition;
 		if(renderMaze) lum = .3f;
 		frontDrop.getColor().a = 1 - lum;
 		frontDrop.setVisible(lum < 1);
@@ -218,12 +229,14 @@ public class GameScreen extends StageScreen implements StoryHandler
 		mapRenderer.setView((OrthographicCamera)gameStage.getViewport().getCamera());
 		mapRenderer.render();
 		
+		/*
 		if(nextWorldTile != null){
 			mapRenderer.getBatch().setColor(Color.GREEN);
 			mapRenderer.setMap(nextWorldTile.map);
 			mapRenderer.setView(gameStage.getViewport().getCamera().combined, (1-transition) * GameSettings.WORLD_WIDTH, 0, GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT);
 			mapRenderer.render();
 		}
+		*/
 		
 		
 		gameStage.act();

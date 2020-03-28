@@ -47,6 +47,8 @@ public class GameSettings
 	public static float CAR_SPEED = 1;
 	public static float HERO_SPEED = 6;
 	
+	public static float TILE_TRANSITION_SPEED = 3f;
+	
 	public static float MUSIC_VOLUME = 1f;
 	public static float SFX_VOLUME = 1f;
 	
