@@ -81,7 +81,7 @@ public class Hero extends Entity
 		if(car != null){
 			if(game.carFuel > 0){
 				speed = GameSettings.CAR_SPEED;
-				game.carFuel -= speed * GameSettings.CAR_FUEL_CONSUMPTION_PER_METER * delta;
+				game.carFuel -= velocity.len() * speed * GameSettings.CAR_FUEL_CONSUMPTION_PER_METER * delta;
 				if(game.carFuel <= 0){
 					game.carFuel = 0;
 					Assets.i.audio.playCarNoFioul();

@@ -1,7 +1,6 @@
 package net.mgsx.dl11.screens;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -26,13 +25,15 @@ public class MenuScreen extends StageScreen {
 		
 		root.setBackground(new TextureRegionDrawable(Assets.i.titleScreen));
 		
+		/*
 		root.add(new Label("Anno Bellum 239", skin, "title")).getActor().setColor(Color.BLACK);
 		root.row();
 		root.add("CatWired - kAy mOttO - MGSX - Toonguila").getActor().setColor(Color.DARK_GRAY);
 		root.row();
+		*/
 		
-		root.add(UI.onChange(UI.blinkButton("Press X to start"), event->startGame()))
-		.padTop(150).row();
+		root.add(UI.onChange(UI.blinkButton("Press X to start"), event->startGame())).expand().bottom()
+		.padBottom(25).row();
 	}
 	
 	private void startGame(){

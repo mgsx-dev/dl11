@@ -86,9 +86,9 @@ public class Dialogs {
 		
 		Cell cell = backdrop.add(alert).expand();
 		if(Align.isTop(align)){
-			cell.top();
+			cell.top().padTop(15);
 		}else if(Align.isBottom(align)){
-			cell.bottom();
+			cell.bottom().padBottom(15);
 		}else{
 			cell.center();
 		}

@@ -154,6 +154,8 @@ public class WorldTile {
 		for(Entity e : entities){
 			group.addActor(e.actor);
 		}
+		
+		hero.actor.toFront();
 	}
 	
 	public void setEntering(int direction){
@@ -170,6 +172,8 @@ public class WorldTile {
 		this.hero.velocity.setZero();
 		
 		this.hero.controlEnabled = false;
+		
+		this.hero.actor.setVisible(this.hero.car == null);
 		
 		for(Entity e : entities){
 			if(e instanceof Bonus){

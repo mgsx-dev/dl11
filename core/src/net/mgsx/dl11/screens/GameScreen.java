@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.dl11.DL11Game;
@@ -101,10 +100,10 @@ public class GameScreen extends StageScreen implements StoryHandler
 	}
 	
 	@Override
-	public void spawnText(String text){
+	public void spawnText(String text, int align){
 		if(GameSettings.debugOptions.containsKey("skipText")) return;
 		locked = true;
-		Dialogs.spawnInfo(stage, text, Align.top, ()->unlock());
+		Dialogs.spawnInfo(stage, text, align, ()->unlock());
 	}
 	
 	private void unlock(){
