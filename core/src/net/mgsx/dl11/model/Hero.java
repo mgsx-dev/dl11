@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 
 import net.mgsx.dl11.assets.Assets;
+import net.mgsx.dl11.assets.HeroAnimator;
 import net.mgsx.dl11.utils.UniControl;
 
 public class Hero extends Entity
@@ -27,7 +28,7 @@ public class Hero extends Entity
 		this.game = game;
 		this.world = world;
 		actor = group = new Group();
-		sprite = new Image(Assets.i.getHeroRegion());
+		sprite = new Image(Assets.i.hero.get(HeroAnimator.FRONT, 0));
 		sprite.setSize(1, 1);
 		sprite.setPosition(0, 0, Align.center);
 		group.addActor(sprite);

@@ -39,7 +39,7 @@ public class Drone extends Entity {
 		actor = group;
 		
 		sprite = new Image(Assets.i.getDroneRegion(horizontal, vertical, rotative));
-		sprite.setSize(1, 1);
+		sprite.setSize(34f/32f, 34f/32f);
 		sprite.setPosition(0, 0, Align.center);
 		
 		for(int i=0 ; i<4 ; i++){

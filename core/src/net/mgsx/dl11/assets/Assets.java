@@ -25,9 +25,17 @@ public class Assets {
 	
 	public final Audio audio;
 	
+	public final HeroAnimator hero;
+	
+	public final TextureRegion droneBlue;
+	
 	public Assets() {
 		
 		audio = new Audio();
+		
+		droneBlue = new TextureRegion(new Texture(Gdx.files.internal("sprites/drone-blue.png")));
+		
+		hero = new HeroAnimator(new Texture(Gdx.files.internal("sprites/hero-south.png")));
 		
 		/*
 		for(int i=0 ; i<4 ; i++){
@@ -85,9 +93,11 @@ public class Assets {
 		return getTile(2);
 	}
 
+	/*
 	public TextureRegion getHeroRegion() {
 		return getTile(8);
 	}
+	*/
 
 	public TextureRegion getMedPackRegion() {
 		return getTile(4);

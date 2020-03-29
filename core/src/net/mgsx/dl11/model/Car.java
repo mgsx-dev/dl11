@@ -52,13 +52,25 @@ public class Car extends Entity {
 	public void update(float delta) {
 		time += delta;
 		
-		actor.setPosition(position.x, position.y);
+		actor.setPosition(position.x, position.y + .5f);
 		
+		
+		float carScale = 1f;
+		
+		car.setSize(carScale * 168f / 64f, carScale * 68f / 64f);
+		wheelL.setSize(40f/64f, 40f/64f);
+		wheelR.setSize(40f/64f, 40f/64f);
+		wheelL.setPosition(.45f, 0, Align.center);
+		wheelR.setPosition(2.22f, 0, Align.center);
+		
+		
+		/*
 		car.setSize(3, 2);
-		wheelL.setSize(20f/32f, 20f/32f);
-		wheelR.setSize(20f/32f, 20f/32f);
-		wheelL.setPosition(.5f, .5f, Align.center);
-		wheelR.setPosition(2.5f, .5f, Align.center);
+		wheelL.setSize(40f/64f, 40f/64f);
+		wheelR.setSize(40f/64f, 40f/64f);
+		wheelL.setPosition(.45f, 0, Align.center);
+		wheelR.setPosition(2.22f, 0, Align.center);
+		*/
 		
 		if(controlEnabled && game.carFuel > 0){
 			car.setY(MathUtils.sin(time * 30) * .1f);
@@ -72,6 +84,5 @@ public class Car extends Entity {
 			wheelR.setRotation(wheelAngle);
 		}
 	}
-	
 	
 }
