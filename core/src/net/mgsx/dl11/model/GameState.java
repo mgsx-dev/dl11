@@ -24,5 +24,9 @@ public class GameState {
 		super();
 		this.storyHandler = storyHandler;
 	}
+
+	public boolean isHeroLowLife() {
+		return heroLife <= GameSettings.HERO_LIFE_ALARM;
+	}
 	
 }

@@ -15,6 +15,7 @@ public class HUD extends Table
 	private ItemBar lifeBar;
 	private ItemBar fuelBar;
 	private MeterUI fuelRate;
+	private float time;
 
 	public HUD(GameState game, Skin skin) {
 		super(skin);
@@ -40,7 +41,14 @@ public class HUD extends Table
 	
 	@Override
 	public void act(float delta) {
+		time += delta;
+		
 		lifeBar.setValue(game.heroLife);
+		
+		if(game.isHeroLowLife()){
+			lifeBar.getColor().a = (time * 3) % 1f > 0.5f ? 1 : .5f;
+		}
+		
 		fuelBar.setValue(game.heroFuel);
 		fuelRate.setValue(game.carFuel / GameSettings.CAR_FUEL_MAX);
 		super.act(delta);

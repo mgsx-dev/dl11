@@ -110,7 +110,7 @@ public class Audio {
 	}
 	
 	public void playState(GameState game){
-		lifeAlarm.setActive(game.heroLife <= GameSettings.HERO_LIFE_ALARM, 1);
+		lifeAlarm.setActive(game.isHeroLowLife(), 1);
 	}
 	
 	public void clearState() {
