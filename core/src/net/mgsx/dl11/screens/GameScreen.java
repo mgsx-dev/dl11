@@ -1,9 +1,15 @@
 package net.mgsx.dl11.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -27,7 +33,7 @@ import net.mgsx.dl11.utils.UniControl;
 
 public class GameScreen extends StageScreen implements StoryHandler
 {
-	private static final float unitScale = 1f / 32f;
+	public static final float unitScale = 1f / 32f;
 
 	private OrthogonalTiledMapRenderer mapRenderer;
 	
@@ -45,9 +51,33 @@ public class GameScreen extends StageScreen implements StoryHandler
 	private MazeDrawer mazeRenderer;
 	private float time;
 	private Image frontDrop;
+	private Matrix4 fboMatrix = new Matrix4();
+	private FrameBuffer fbo;
+
+	
+	// TODO once per map, no per tile !
+			// FBO Cache
+			/*
+			int fboW = GameSettings.WORLD_WIDTH * 32;
+			int fboH = GameSettings.WORLD_HEIGHT * 32;
+			FrameBuffer fbo = new FrameBuffer(Format.RGBA8888, fboW, fboH, false);
+			OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(worldTile.map, GameScreen.unitScale);
+			FitViewport vp = new FitViewport(GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT);
+			vp.update(fboW, fboH);
+			fbo.begin();
+			renderer.setView((OrthographicCamera)vp.getCamera());
+			renderer.render();
+			fbo.end();
+			renderer.dispose();
+			*/
 	
 	public GameScreen() {
 		super(new FitViewport(GameSettings.HUD_WIDTH, GameSettings.HUD_HEIGHT));
+		
+		int fboW = GameSettings.WORLD_WIDTH * 32;
+		int fboH = GameSettings.WORLD_HEIGHT * 32;
+		fbo = new FrameBuffer(Format.RGBA8888, fboW, fboH, false);
+		fboMatrix.setToOrtho2D(0, 0, GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT);
 		
 		// gameStage = new Stage(new PixelPerfectViewport(GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT, 32));
 		gameStage = new Stage(new FitViewport(GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT));
@@ -65,6 +95,14 @@ public class GameScreen extends StageScreen implements StoryHandler
 				if(!cell.visited && !GameSettings.DISPLAY_UNVISITED_MAZE_CELL) return null;
 				if(cell.car != null) return Color.GRAY;
 				return super.getCellColor(x, y);
+			}
+			@Override
+			protected void extraDrawing(ShapeRenderer shapes, int x, int y) {
+				WorldTile cell = worldMap.getCell(x, y);
+				if(cell.car != null){
+					shapes.setColor(Color.YELLOW);
+					shapes.circle(x+.5f, y+.5f, .20f, 36);
+				}
 			}
 		};
 		
@@ -91,6 +129,14 @@ public class GameScreen extends StageScreen implements StoryHandler
 		gameStage.addActor(frontDrop);
 		
 		Story.enteringGame(game);
+	}
+	
+	@Override
+	public void dispose() {
+		fbo.dispose();
+		gameStage.dispose();
+		mapRenderer.dispose();
+		super.dispose();
 	}
 	
 	@Override
@@ -141,6 +187,7 @@ public class GameScreen extends StageScreen implements StoryHandler
 				fadeOutTime = 1;
 				Story.heroFail(game);
 			}
+			Assets.i.audio.clearDrones();
 		}else{
 			worldTile.update(gameDelta);
 		}
@@ -220,7 +267,6 @@ public class GameScreen extends StageScreen implements StoryHandler
 		clear(Color.BLACK);
 		
 		// TODO render into FBO anyway to avoid glitches
-		gameStage.getViewport().apply();
 		
 		// render map here
 		
@@ -229,10 +275,25 @@ public class GameScreen extends StageScreen implements StoryHandler
 		frontDrop.getColor().a = 1 - lum;
 		frontDrop.setVisible(lum < 1);
 		
-		mapRenderer.getBatch().setColor(Color.WHITE);
-		mapRenderer.setMap(worldTile.map);
-		mapRenderer.setView((OrthographicCamera)gameStage.getViewport().getCamera());
-		mapRenderer.render();
+		boolean FBOMODE = true;
+		
+		if(FBOMODE){
+			
+			fbo.begin();
+			Gdx.gl.glClearColor(0, 0, 0, 0);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			mapRenderer.getBatch().setColor(Color.WHITE);
+			mapRenderer.setMap(worldTile.map);
+			mapRenderer.setView(fboMatrix, 0, 0, GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT);
+			mapRenderer.render();
+			fbo.end();
+		}else{
+			gameStage.getViewport().apply();
+			mapRenderer.getBatch().setColor(Color.WHITE);
+			mapRenderer.setMap(worldTile.map);
+			mapRenderer.setView((OrthographicCamera)gameStage.getViewport().getCamera());
+			mapRenderer.render();
+		}
 		
 		/*
 		if(nextWorldTile != null){
@@ -243,7 +304,13 @@ public class GameScreen extends StageScreen implements StoryHandler
 		}
 		*/
 		
+		gameStage.getViewport().apply();
 		gameStage.getBatch().begin();
+		
+		if(FBOMODE){
+			gameStage.getBatch().setColor(Color.WHITE);
+			gameStage.getBatch().draw(fbo.getColorBufferTexture(), 0f, 0f, gameStage.getWidth(), gameStage.getHeight(), 0f, 0f, 1f, 1f);
+		}
 		
 		for(Entity e : worldTile.entities){
 			if(e instanceof Drone){
@@ -253,7 +320,6 @@ public class GameScreen extends StageScreen implements StoryHandler
 		}
 		
 		gameStage.getBatch().end();
-		
 		
 		
 		gameStage.act();

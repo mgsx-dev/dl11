@@ -20,7 +20,7 @@ default
   index: -1
 default-round
   rotate: false
-  xy: 2, 2
+  xy: 70, 70
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
@@ -29,7 +29,7 @@ default-round
   index: -1
 default-round-disabled
   rotate: false
-  xy: 808, 330
+  xy: 2, 2
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
@@ -38,7 +38,7 @@ default-round-disabled
   index: -1
 default-round-down
   rotate: false
-  xy: 842, 364
+  xy: 36, 36
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
@@ -52,79 +52,93 @@ drone-blue
   orig: 32, 32
   offset: 0, 0
   index: -1
-drone-red
+drone-blue-bad
   rotate: false
   xy: 2, 54
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fuel
+drone-red
   rotate: false
   xy: 88, 90
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fuel-mini
-  rotate: false
-  xy: 36, 36
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-fuel-open-mini
-  rotate: false
-  xy: 70, 70
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-fuel2
+drone-red-bad
   rotate: false
   xy: 774, 314
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fuel2-open
+fuel
   rotate: false
   xy: 808, 348
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-hero-south
-  rotate: false
-  xy: 2, 20
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-life
+fuel-mini
   rotate: false
   xy: 88, 72
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-life-empty
+fuel-open-mini
   rotate: false
   xy: 156, 106
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-medpack2
+fuel2
+  rotate: false
+  xy: 2, 20
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+fuel2-open
   rotate: false
   xy: 36, 54
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-medpack2-opened
+hero-south
   rotate: false
   xy: 122, 90
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+life
+  rotate: false
+  xy: 774, 262
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+life-empty
+  rotate: false
+  xy: 808, 296
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+medpack2
+  rotate: false
+  xy: 774, 280
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+medpack2-opened
+  rotate: false
+  xy: 808, 314
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -138,7 +152,7 @@ title
   index: -1
 typing
   rotate: false
-  xy: 774, 274
+  xy: 842, 342
   size: 16, 16
   split: 7, 7, 7, 7
   pad: 5, 5, 5, 5
@@ -147,14 +161,14 @@ typing
   index: -1
 wheel
   rotate: false
-  xy: 774, 292
+  xy: 842, 360
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 796, 309
+  xy: 864, 377
   size: 3, 3
   orig: 3, 3
   offset: 0, 0

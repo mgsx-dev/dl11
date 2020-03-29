@@ -29,11 +29,11 @@ public class UniControl {
 	}
 
 	public static boolean isActionJustPressed(){
-		return Gdx.input.isKeyJustPressed(Input.Keys.X);
+		return Gdx.input.isKeyJustPressed(Input.Keys.E);
 	}
 
 	public static boolean isOptionJustPressed() {
-		return Gdx.input.isKeyJustPressed(Input.Keys.C);
+		return Gdx.input.isKeyJustPressed(Input.Keys.R);
 	}
 
 }

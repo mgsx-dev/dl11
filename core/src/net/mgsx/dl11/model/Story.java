@@ -54,7 +54,7 @@ public class Story {
 			if(worldTile.isLastTile){
 				game.gameOver = true;
 				game.storyHandler.spawnText("I made it!", Align.top);
-				Assets.i.audio.playMusicOutro();
+				Assets.i.audio.stopMusic();
 				Assets.i.audio.playLastTileWithCar();
 			}
 		}
@@ -88,11 +88,11 @@ public class Story {
 	public static void enteringCar(GameState game) {
 		if(!game.enteredCarWithFuel && game.carFuel > 0){
 			game.enteredCarWithFuel = true;
-			game.storyHandler.spawnText("I fill up the tank now we can move to the target point.\nPRESS X TO EXIT THE CAR", Align.top);
+			game.storyHandler.spawnText("I fill up the tank now we can move to the target point.\nPRESS E TO EXIT THE CAR", Align.top);
 		}
 		if(!game.enteredCarWithoutFuel && game.carFuel <= 0){
 			game.enteredCarWithoutFuel = true;
-			game.storyHandler.spawnText("Tank is empty, i need to find some fuel.\nPRESS X TO EXIT THE CAR", Align.top);
+			game.storyHandler.spawnText("Tank is empty, i need to find some fuel.\nPRESS E TO EXIT THE CAR", Align.top);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class Story {
 			game.gameOver = true;
 			game.storyHandler.spawnText("I failed...", Align.center);
 			Assets.i.audio.playHeroDead();
-			Assets.i.audio.playMusicFail();
+			// Assets.i.audio.playMusicFail();
 		}
 	}
 	

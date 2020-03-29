@@ -45,12 +45,17 @@ public class MazeDrawer implements Disposable {
 							shapes.rect(r.x, r.y, r.width, r.height);
 						}
 					}
+					extraDrawing(shapes, x, y);
 				}
 			}
 		}
 		shapes.end();
 	}
 
+	protected void extraDrawing(ShapeRenderer shapes, int x, int y){
+		
+	}
+	
 	public Color getCellColor(int x, int y) {
 		return Color.ORANGE;
 	}

@@ -1,6 +1,5 @@
 package net.mgsx.dl11.model;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -128,11 +127,6 @@ public class Drone extends Entity {
 			velocity.set(directions[currentDirection].x, directions[currentDirection].y).scl(speed);
 			
 		}
-		
-		// TODO update shots (ray cast)
-		
-		sprite.setColor(hurtPlayer ? Color.ORANGE : Color.WHITE);
-		
 		
 		// apply velocity (clamp if necessary ? )
 		position.mulAdd(velocity, delta);

@@ -37,12 +37,17 @@ public class Audio {
 		playMusic("Vehicle2");
 	}
 	
+	/*
 	public void playMusicFail(){
 		playMusic("GameJam1"); // TODO other music ?
 	}
+	*/
 	
 	public void playMusicOutro(){
-		playMusic("GameJam1"); // TODO other music ?
+		playMusic("GameJamShift"); 
+	}
+	public void playMusicIntro(){
+		playMusic("GameJamShift"); 
 	}
 	
 	private void playMusic(String name) {
@@ -50,14 +55,18 @@ public class Audio {
 		if(music == currentMusic){
 			return;
 		}
-		if(currentMusic != null){
-			currentMusic.stop();
-			currentMusic = null;
-		}
+		stopMusic();
 		currentMusic = music;
 		music.setLooping(true);
 		music.setVolume(GameSettings.MUSIC_VOLUME);
 		music.play();
+	}
+
+	public void stopMusic() {
+		if(currentMusic != null){
+			currentMusic.stop();
+			currentMusic = null;
+		}
 	}
 	
 	private Music getMusic(String name) {

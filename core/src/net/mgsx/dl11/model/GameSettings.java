@@ -30,7 +30,7 @@ public class GameSettings
 	
 	public static int MEDPACK_LIFE = 1;
 
-	public static float CAR_FUEL_CONSUMPTION_PER_METER = .1f;
+	public static float CAR_FUEL_CONSUMPTION_PER_METER = .08f;
 
 	public static int CAR_FUEL_INIT = 0;
 	public static int CAR_FUEL_MAX = 10;
@@ -44,7 +44,7 @@ public class GameSettings
 	public static float MAZE_WALLS_RATE = .4f;
 	
 	public static boolean DISPLAY_UNVISITED_MAZE_CELL = false;
-	public static float CAR_SPEED = 1;
+	public static float CAR_SPEED = 2;
 	public static float HERO_SPEED = 6;
 	
 	public static float TILE_TRANSITION_SPEED = 3f;
@@ -53,7 +53,7 @@ public class GameSettings
 
 	
 	public static float MUSIC_VOLUME = 1f;
-	public static float SFX_VOLUME = 1f;
+	public static float SFX_VOLUME = .5f;
 	
 	
 	public static final int WORLD_WIDTH = 24; //768;

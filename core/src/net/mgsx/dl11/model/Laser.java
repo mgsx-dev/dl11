@@ -22,6 +22,7 @@ public class Laser {
 	
 	public Laser() {
 		actor = new Image(Assets.i.getWhitePixel());
+		actor.setSize(0, 0);
 		state = State.IDLE;
 	}
 	

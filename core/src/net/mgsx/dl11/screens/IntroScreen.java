@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.dl11.DL11Game;
+import net.mgsx.dl11.assets.Assets;
 import net.mgsx.dl11.model.GameSettings;
 import net.mgsx.dl11.model.Story;
 import net.mgsx.dl11.ui.Dialogs;
@@ -18,6 +19,12 @@ public class IntroScreen extends StageScreen {
 		// Skin skin = Assets.i.skin;
 		
 		Dialogs.spawnInfo(stage, Story.introText(), Align.center, ()->DL11Game.i().setScreen(new GameScreen()));
+	}
+	
+	@Override
+	public void show() {
+		Assets.i.audio.playMusicIntro();
+		super.show();
 	}
 	
 	@Override

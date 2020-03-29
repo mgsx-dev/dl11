@@ -165,7 +165,7 @@ public class WorldTile {
 		
 		GridPoint2 delta = MazeCell.DELTAS[direction];
 		
-		float borderDist = 1f;
+		float borderDist = 0f;
 		
 		this.hero.position.set(point.x - delta.x * borderDist, point.y - delta.y * borderDist);
 		
@@ -255,25 +255,26 @@ public class WorldTile {
 		}else{
 			if(!noInput){
 				float heroRadius = .5f;
-				if(e.position.x <= heroRadius){
+				float extraRadius = .5f;
+				if(e.position.x <= heroRadius - extraRadius){
 					exitDirection = MazeCell.WEST;
 					exiting = true;
 				}
-				if(e.position.x >= width - heroRadius){
+				if(e.position.x >= width - heroRadius + extraRadius){
 					exitDirection = MazeCell.EAST;
 					exiting = true;
 				}
-				if(e.position.y <= heroRadius){
+				if(e.position.y <= heroRadius - extraRadius){
 					exitDirection = MazeCell.SOUTH;
 					exiting = true;
 				}
-				if(e.position.y >= height - heroRadius){
+				if(e.position.y >= height - heroRadius + extraRadius){
 					exitDirection = MazeCell.NORTH;
 					exiting = true;
 				}
 				if(car != null && hero.car == null){
 					boolean collideWithCar = Grid2D.intersectRectCircle(hero.position, heroRadius, car.position.x, car.position.y, car.width, car.height);
-					if(!exitingCar && collideWithCar){
+					if((!exitingCar || UniControl.isActionJustPressed()) && collideWithCar){
 						hero.car = car;
 						car.controlEnabled = true;
 						hero.position.set(car.position.x + car.width/2, car.position.y + car.height/2);
@@ -300,7 +301,7 @@ public class WorldTile {
 						exitingCar = false;
 					}
 				}
-				if(car != null && hero.car != null){
+				else if(car != null && hero.car != null){
 					if(UniControl.isActionJustPressed()){
 						hero.car = null;
 						car.controlEnabled = false;
@@ -398,6 +399,7 @@ public class WorldTile {
 		entering = false;
 		active = false;
 		wasOnBonus = false;
+		exitingCar = false;
 		
 		hero.car = null;
 		

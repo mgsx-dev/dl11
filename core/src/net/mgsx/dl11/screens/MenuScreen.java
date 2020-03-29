@@ -32,7 +32,7 @@ public class MenuScreen extends StageScreen {
 		root.row();
 		*/
 		
-		root.add(UI.onChange(UI.blinkButton("Press X to start"), event->startGame())).expand().bottom()
+		root.add(UI.onChange(UI.blinkButton("Press E to start"), event->startGame())).expand().bottom()
 		.padBottom(25).row();
 	}
 	

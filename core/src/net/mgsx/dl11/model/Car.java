@@ -73,7 +73,7 @@ public class Car extends Entity {
 		*/
 		
 		if(controlEnabled && game.carFuel > 0){
-			car.setY(MathUtils.sin(time * 30) * .1f);
+			car.setY(MathUtils.sin(time * 30) * .05f);
 			
 			wheelAngle += -velocity.x * 4;
 			
