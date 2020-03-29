@@ -33,7 +33,7 @@ public class WorldTile {
 	private static final Vector2 end = new Vector2();
 	private static final Vector2 normal = new Vector2();
 	public TiledMap map;
-	private final Array<Entity> entities = new Array<Entity>();
+	public final Array<Entity> entities = new Array<Entity>();
 	private int width;
 	private int height;
 	public boolean exiting;
@@ -130,6 +130,26 @@ public class WorldTile {
 	}
 	
 	public void getActors(Group group){
+		
+		Array<Entity> drones = new Array<Entity>();
+		Array<Entity> bonus = new Array<Entity>();
+		Array<Entity> other = new Array<Entity>();
+
+		for(Entity e : entities){
+			if(e instanceof Drone){
+				drones.add(e);
+			}else if(e instanceof Bonus){
+				bonus.add(e);
+			}else{
+				other.add(e);
+			}
+		}
+		
+		entities.clear();
+		entities.addAll(bonus);
+		entities.addAll(drones);
+		entities.addAll(other);
+		
 		for(Entity e : entities){
 			group.addActor(e.actor);
 		}

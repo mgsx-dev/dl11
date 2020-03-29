@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.mgsx.dl11.DL11Game;
 import net.mgsx.dl11.assets.Assets;
 import net.mgsx.dl11.maze.MazeDrawer;
+import net.mgsx.dl11.model.Drone;
+import net.mgsx.dl11.model.Entity;
 import net.mgsx.dl11.model.GameSettings;
 import net.mgsx.dl11.model.GameState;
 import net.mgsx.dl11.model.Story;
@@ -48,6 +50,7 @@ public class GameScreen extends StageScreen implements StoryHandler
 	public GameScreen() {
 		super(new FitViewport(GameSettings.HUD_WIDTH, GameSettings.HUD_HEIGHT));
 		
+		// gameStage = new Stage(new PixelPerfectViewport(GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT, 32));
 		gameStage = new Stage(new FitViewport(GameSettings.WORLD_WIDTH, GameSettings.WORLD_HEIGHT));
 		
 		game = new GameState(this);
@@ -240,6 +243,18 @@ public class GameScreen extends StageScreen implements StoryHandler
 			mapRenderer.render();
 		}
 		*/
+		
+		gameStage.getBatch().begin();
+		
+		for(Entity e : worldTile.entities){
+			if(e instanceof Drone){
+				Drone d = (Drone)e;
+				d.drawLasers(gameStage.getBatch());
+			}
+		}
+		
+		gameStage.getBatch().end();
+		
 		
 		
 		gameStage.act();

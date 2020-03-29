@@ -55,7 +55,7 @@ public class Assets {
 		
 		hero = new HeroAnimator(skin.getRegion("hero-south"));
 		
-
+		maps.first().map.getTileSets().getTile(1).getTextureRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 	}
 
 	private void loadMap(String filename) {

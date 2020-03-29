@@ -1,5 +1,6 @@
 package net.mgsx.dl11.model;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -74,6 +75,11 @@ public class Laser {
 	public void reset() {
 		playerOn = false;
 		state = State.IDLE;
+	}
+
+	public void draw(Batch batch, Vector2 position) {
+		actor.setPosition(position.x, position.y);
+		actor.draw(batch, 1);
 	}
 
 }

@@ -1,6 +1,7 @@
 package net.mgsx.dl11.model;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -46,7 +47,7 @@ public class Drone extends Entity {
 			Laser laser = new Laser();
 			laser.direction.set(directions[i].x, directions[i].y);
 			lasers.add(laser);
-			group.addActor(laser.actor);
+			// group.addActor(laser.actor);
 		}
 		group.addActor(sprite);
 		
@@ -150,6 +151,12 @@ public class Drone extends Entity {
 		}
 		if(!wasFiring && isFiring){
 			Assets.i.audio.playDroneFiring();
+		}
+	}
+
+	public void drawLasers(Batch batch) {
+		for(Laser l : lasers){
+			l.draw(batch, position);
 		}
 	}
 
