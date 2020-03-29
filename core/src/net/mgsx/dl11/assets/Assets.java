@@ -104,17 +104,27 @@ public class Assets {
 	*/
 
 	public TextureRegion getMedPackRegion() {
-		return skin.getRegion("medpack");
+		return skin.getRegion("medpack2");
 	}
 
 	public TextureRegion getFuelRegion() {
-		return skin.getRegion("fuel");
+		return skin.getRegion("fuel2");
+	}
+	public TextureRegion getMedPackOpenRegion() {
+		return skin.getRegion("medpack2-opened");
+	}
+
+	public TextureRegion getFuelOpenRegion() {
+		return skin.getRegion("fuel2-open");
 	}
 
 	public TextureRegion getLifeRegion() {
 		return skin.getRegion("life");
 	}
-
+	public TextureRegion getFuelMiniRegion() {
+		return skin.getRegion("fuel-mini");
+	}
+	
 	public TiledMap getMap(String name) {
 		for(MapDesc map : maps){
 			if(map.name.equals(name)){

@@ -98,12 +98,9 @@ public class Hero extends Entity
 		
 		position.mulAdd(velocity, delta);
 		
-		// TODO remove color changes
-		if(world.clamp(this)){
-			sprite.setColor(Color.GOLD);
-		}else{
-			sprite.setColor(Color.WHITE);
-		}
+		world.clamp(this);
+		
+		sprite.setColor(Color.WHITE);
 		
 		if(blinkTimeout > 0){
 			sprite.getColor().a = (time * 10) % 1f > .8f ? 1 : .2f;

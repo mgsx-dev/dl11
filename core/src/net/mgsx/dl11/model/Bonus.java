@@ -17,13 +17,18 @@ abstract public class Bonus extends Entity{
 	public void respawn(GameState game) {
 		if(!active && game.ticks >= lastTick + GameSettings.BONUS_RESPAWN_TICKS){
 			active = true;
-			actor.setVisible(true);
+			// actor.setVisible(true);
+			setClosed();
 		}
 	}
 	
+	abstract protected void setClosed();
+	abstract protected void setOpened();
+
 	protected void unspawn(GameState game) {
 		active = false;
-		actor.setVisible(false);
+		// actor.setVisible(false);
+		setOpened();
 		lastTick = game.ticks;
 	}
 

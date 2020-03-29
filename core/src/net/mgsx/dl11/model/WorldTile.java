@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
@@ -246,9 +247,13 @@ public class WorldTile {
 						hero.actor.setVisible(false);
 						exitingCar = false;
 						
-						// transfert fuel TODO maybe not full fuel ... 
-						game.carFuel += game.heroFuel;
-						game.heroFuel = 0;
+						// transfert fuel
+						int currentFuel = MathUtils.ceil(game.carFuel);
+						int fuelEmpty = GameSettings.CAR_FUEL_MAX - currentFuel;
+						int fuelToAdd = Math.min(fuelEmpty, game.heroFuel);
+						
+						game.carFuel += fuelToAdd;
+						game.heroFuel -= fuelToAdd;
 						
 						Story.enteringCar(game);
 						

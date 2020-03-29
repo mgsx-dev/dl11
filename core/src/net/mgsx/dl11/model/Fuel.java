@@ -2,6 +2,7 @@ package net.mgsx.dl11.model;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import net.mgsx.dl11.assets.Assets;
@@ -44,6 +45,16 @@ public class Fuel extends Bonus {
 			Assets.i.audio.playBonusDenied();
 			return false;
 		}
+	}
+
+	@Override
+	protected void setClosed() {
+		sprite.setDrawable(new TextureRegionDrawable(Assets.i.getFuelRegion()));
+	}
+
+	@Override
+	protected void setOpened() {
+		sprite.setDrawable(new TextureRegionDrawable(Assets.i.getFuelOpenRegion()));
 	}
 
 }
