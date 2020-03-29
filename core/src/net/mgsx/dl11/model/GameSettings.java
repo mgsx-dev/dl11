@@ -15,8 +15,8 @@ public class GameSettings
 	public static final ObjectMap<String, String> debugOptions = new ObjectMap<String, String>();
 	public static String[] arguments;
 	
-	public static final float HUD_WIDTH = GameSettings.WORLD_WIDTH * 16;
-	public static final float HUD_HEIGHT = GameSettings.WORLD_HEIGHT * 16;
+	public static final int HUD_WIDTH = GameSettings.WORLD_WIDTH * 16;
+	public static final int HUD_HEIGHT = GameSettings.WORLD_HEIGHT * 16;
 	
 	public static int MAP_WIDTH = 10; // XXX 10;
 	public static int MAP_HEIGHT = 5;
@@ -56,8 +56,8 @@ public class GameSettings
 	public static float SFX_VOLUME = 1f;
 	
 	
-	public static final float WORLD_WIDTH = 24; //768;
-	public static final float WORLD_HEIGHT = 18; //576;
+	public static final int WORLD_WIDTH = 24; //768;
+	public static final int WORLD_HEIGHT = 18; //576;
 	
 	public static void init() {
 		if(DEBUG && arguments.length > 0){

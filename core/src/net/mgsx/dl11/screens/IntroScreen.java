@@ -22,7 +22,7 @@ public class IntroScreen extends StageScreen {
 	
 	@Override
 	public void render(float delta) {
-		clear(Color.GRAY);
+		clear(Color.BLACK);
 		super.render(delta);
 	}
 }

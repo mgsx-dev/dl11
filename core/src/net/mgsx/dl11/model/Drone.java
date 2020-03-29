@@ -155,6 +155,7 @@ public class Drone extends Entity {
 	}
 
 	public void drawLasers(Batch batch) {
+		if(!active) return;
 		for(Laser l : lasers){
 			l.draw(batch, position);
 		}

@@ -9,6 +9,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		GameSettings.arguments = arg;
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = GameSettings.HUD_WIDTH;
+		config.height = GameSettings.HUD_HEIGHT;
 		new LwjglApplication(new DL11Game(), config);
 	}
 }

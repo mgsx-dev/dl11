@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.dl11.DL11Game;
@@ -23,11 +24,15 @@ public class MenuScreen extends StageScreen {
 		root.setFillParent(true);
 		stage.addActor(root);
 		
-		root.add(new Label("Anno Bellum 239", skin, "title")).row();
-		root.add("CatWired - kAy mOttO - MGSX - Toonguila").row();
+		root.setBackground(new TextureRegionDrawable(Assets.i.titleScreen));
+		
+		root.add(new Label("Anno Bellum 239", skin, "title")).getActor().setColor(Color.BLACK);
+		root.row();
+		root.add("CatWired - kAy mOttO - MGSX - Toonguila").getActor().setColor(Color.DARK_GRAY);
+		root.row();
 		
 		root.add(UI.onChange(UI.blinkButton("Press X to start"), event->startGame()))
-		.padTop(30).row();
+		.padTop(150).row();
 	}
 	
 	private void startGame(){
@@ -43,7 +48,7 @@ public class MenuScreen extends StageScreen {
 	
 	@Override
 	public void render(float delta) {
-		clear(Color.GRAY);
+		clear(Color.BLACK);
 		super.render(delta);
 	}
 }
