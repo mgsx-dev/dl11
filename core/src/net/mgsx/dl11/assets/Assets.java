@@ -125,6 +125,13 @@ public class Assets {
 		return skin.getRegion("fuel-mini");
 	}
 	
+	public TextureRegion getLifeEmptyRegion() {
+		return skin.getRegion("life-empty");
+	}
+	public TextureRegion getFuelMiniEmptyRegion() {
+		return skin.getRegion("fuel-mini-empty");
+	}
+	
 	public TiledMap getMap(String name) {
 		for(MapDesc map : maps){
 			if(map.name.equals(name)){

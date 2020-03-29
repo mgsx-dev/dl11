@@ -28,7 +28,7 @@ import net.mgsx.dl11.utils.UniControl;
 
 public class GameScreen extends StageScreen implements StoryHandler
 {
-	private static final float unitScale = 1f / 64f;
+	private static final float unitScale = 1f / 32f;
 
 	private OrthogonalTiledMapRenderer mapRenderer;
 	
