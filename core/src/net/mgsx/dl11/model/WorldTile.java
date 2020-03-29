@@ -197,7 +197,7 @@ public class WorldTile {
 						if(b.canBeAquired(game) && b.aquire(game)){
 							Story.pickupBonus(game, b);
 						}else{
-							isOnBonus = true;
+							isOnBonus |= b.active;
 						}
 					}
 				}
