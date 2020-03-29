@@ -40,6 +40,7 @@ task dist(type: Jar) {
     manifest {
         attributes(
         	'Main-Class': project.mainClassName
+        )
     }
     doLast { 
     	file(archivePath).setExecutable(true, false) 
