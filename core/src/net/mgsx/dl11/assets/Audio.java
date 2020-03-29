@@ -129,7 +129,7 @@ public class Audio {
 	
 	public void playDroneStates(boolean firing, boolean activated){
 		// stack SFXs
-		dronesFire.setActive(firing, 1);
+		dronesFire.setActive(firing, .5f);
 		dronesActive.setActive(activated, 1);
 	}
 	
@@ -143,14 +143,14 @@ public class Audio {
 	}
 	
 	public void playDroneDetect(){
-		playSFX("lasersurfaisceau", 1);
+		playSFX("lasersurfaisceau", .5f);
 	}
 	
 	public void playHeroHurtByDrone(){
 		playSFX("lasertouche", 1);
 	}
 	public void playHeroHurtByRadiation(){
-		playSFX("radiation", 1);
+		playSFX("radiation", .5f);
 	}
 	public void playHeroDead(){
 		playSFX("failed", 1);

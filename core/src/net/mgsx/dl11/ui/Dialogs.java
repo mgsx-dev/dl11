@@ -27,7 +27,7 @@ public class Dialogs {
 		
 		DialogState state = new DialogState();
 		
-		text += "\n{BLINK=gray;red;8;0.5}Press E{ENDBLINK}{EVENT=hint}";
+		text += "\n{BLINK=gray;red;8;0.5}Press E to continue.{ENDBLINK}{EVENT=hint}";
 		
 		Table alert = new Table(skin);
 		alert.setBackground("typing");

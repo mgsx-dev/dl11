@@ -249,9 +249,11 @@ public class WorldTile {
 			float heroRadius = .6f; // XXX extra size
 
 			// TODO some anims
+			/*
 			if(e.position.x > heroRadius && e.position.x < width - heroRadius && e.position.y > heroRadius && e.position.y < height - heroRadius){
-				entering = false;
 			}
+			*/
+			entering = false;
 		}else{
 			if(!noInput){
 				float heroRadius = .5f;

@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.PropertiesUtils;
 
 public class GameSettings 
 {
-	public static boolean DEBUG = true; // TODO false for prod
+	public static boolean DEBUG = false; // TODO false for prod
 	public static final ObjectMap<String, String> debugOptions = new ObjectMap<String, String>();
 	public static String[] arguments;
 	

@@ -11,18 +11,18 @@ public class Story {
 	
 	public static String introText() {
 		String text = "";
-		text += "AB. 239\n";
-		text += "239 years after the global thermonuclear war, almost all the planet is hostile.";
+		text += "{COLOR=black}AB. 239{CLEARCOLOR}\n";
+		text += "239 years after the global thermonuclear war, almost all the planet has been wiped out.";
+		text += " Only few humans communities survive underground.";
 		text += "\n";
-		text += "Still few humans surviving under the earth and need foods to survive.";
+		text += "Due to my condition, I'm the one in charge of searching the surface for food, mecanic pieces, and anything helpful for my people.";
 		text += "\n";
-		text += "I am one of the volunteer, looking for foods and stuff at earth surface.";
 		text += "\n";
-		text += "I had an accident with the RV but i managed to fix it.";
+		text += "I just managed to fix our home made RV, we made it out of nothing and that's a miracle it still rolling.";
+		text += " Now I have to bring it back to the shelter.";
 		text += "\n";
-		text += "Now I have to bring back our only RV to the shelter.";
 		text += "\n";
-		text += "Nukes powered drones monitor the restricted area, i should take care.";
+		text += "Nukes powered drones monitor areas all around, those vestiges of the War still dangerous, i should take care.";
 		return text;
 	}
 	
@@ -41,19 +41,26 @@ public class Story {
 			if(worldTile.isLastTile){
 				if(!game.visitedLastTile){
 					game.visitedLastTile = true;
-					game.storyHandler.spawnText("I found the shelter but i need to bring back the RV now...", Align.top);
+					game.storyHandler.spawnText("Good! I found the shelter but i need to bring back the RV now.", Align.top);
 				}
-				Assets.i.audio.playLastTileNoCar(); // TODO each time or first time only ?
+				Assets.i.audio.playLastTileNoCar();
 			}
 		}else{
 			if(!game.changedMapWithCar){
 				game.changedMapWithCar = true;
-				String text = "Drones seams disabled while i stay in car !";
+				String text = "Drones are disabled while i stay in car, thanks to our home made lead shield";
 				game.storyHandler.spawnText(text, Align.top);
 			}
 			if(worldTile.isLastTile){
 				game.gameOver = true;
-				game.storyHandler.spawnText("I made it!", Align.top);
+				String text = "I made it... finally.\n";
+				text += "Some people would say:\n";
+				text += "Great Game!\n";
+				text += "Congratulation!\n";
+				text += "Game Over!\n";
+				text += "... but that's simply my every day job ...";
+				
+				game.storyHandler.spawnText(text, Align.top);
 				Assets.i.audio.stopMusic();
 				Assets.i.audio.playLastTileWithCar();
 			}
@@ -64,7 +71,9 @@ public class Story {
 		String introText = "";
 		introText += "This place have high radiation, i shouldn't get too far";
 		introText += "\n";
-		introText += "I should get some fuel and med packs around before exploring surroundings.";
+		introText += "I should get some fuel and med packs around before exploring the surroundings.";
+		introText += "\n";
+		introText += "Oh! By {COLOR=orange}pressing R{CLEARCOLOR} I could open my Radar-Map to see where is the shelter, it should be on the east if i'm not wrong.";
 		introText += "\n";
 		
 		game.storyHandler.spawnText(introText, Align.bottom);
@@ -88,11 +97,11 @@ public class Story {
 	public static void enteringCar(GameState game) {
 		if(!game.enteredCarWithFuel && game.carFuel > 0){
 			game.enteredCarWithFuel = true;
-			game.storyHandler.spawnText("I fill up the tank now we can move to the target point.\nPRESS E TO EXIT THE CAR", Align.top);
+			game.storyHandler.spawnText("I fill up the tank now we can move to the shelter.\n{COLOR=orange}PRESS E{CLEARCOLOR} to enter/exit the RV.", Align.top);
 		}
 		if(!game.enteredCarWithoutFuel && game.carFuel <= 0){
 			game.enteredCarWithoutFuel = true;
-			game.storyHandler.spawnText("Tank is empty, i need to find some fuel.\nPRESS E TO EXIT THE CAR", Align.top);
+			game.storyHandler.spawnText("Tank is empty, i need to find some fuel.\n{COLOR=orange}PRESS E{CLEARCOLOR} to enter/exit the RV.", Align.top);
 		}
 	}
 
