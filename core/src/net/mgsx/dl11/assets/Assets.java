@@ -1,7 +1,6 @@
 package net.mgsx.dl11.assets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -17,7 +16,7 @@ public class Assets {
 	public Skin skin;
 	
 	public final Array<MapDesc> maps = new Array<MapDesc>();
-	public Texture car, wheel;
+	public TextureRegion car, wheel;
 	
 	public final TiledMap initMap, lastMap;
 	
@@ -32,16 +31,6 @@ public class Assets {
 	public Assets() {
 		
 		audio = new Audio();
-		
-		droneBlue = new TextureRegion(new Texture(Gdx.files.internal("sprites/drone-blue.png")));
-		
-		hero = new HeroAnimator(new Texture(Gdx.files.internal("sprites/hero-south.png")));
-		
-		/*
-		for(int i=0 ; i<4 ; i++){
-			loadMap("maps/map" + (i+1) + ".tmx");
-		}
-		*/
 		
 		for(int i=0 ; i <= 16 ; i++){
 			mapsByMask.add(new Array<MapDesc>());
@@ -59,8 +48,14 @@ public class Assets {
 		
 		skin.getFont("default-font").getData().setLineHeight(16);
 		
-		car = new Texture("sprites/car.png");
-		wheel = new Texture("sprites/wheel.png");
+		car = skin.getRegion("car");
+		wheel = skin.getRegion("wheel");
+		
+		droneBlue = skin.getRegion("drone-blue");
+		
+		hero = new HeroAnimator(skin.getRegion("hero-south"));
+		
+
 	}
 
 	private void loadMap(String filename) {
@@ -72,15 +67,23 @@ public class Assets {
 		mapsByMask.get(md.mask).add(md);
 	}
 
+	/*
 	private TextureRegion getTile(int id) {
 		return maps.first().map.getTileSets().getTile(id + 1).getTextureRegion();
 	}
+	*/
 
 	public TextureRegion getWhitePixel() {
 		return skin.getRegion("white");
 	}
 	
 	public TextureRegion getDroneRegion(boolean horizontal, boolean vertical, boolean rotative) {
+		if(rotative){
+			return skin.getRegion("drone-red");
+		}else{
+			return skin.getRegion("drone-blue");
+		}
+		/*
 		if(rotative){
 			if(horizontal && vertical) return getTile(15);
 			if(horizontal) return getTile(11);
@@ -91,6 +94,7 @@ public class Assets {
 		if(horizontal) return getTile(3);
 		if(vertical) return getTile(6);
 		return getTile(2);
+		*/
 	}
 
 	/*
@@ -100,15 +104,15 @@ public class Assets {
 	*/
 
 	public TextureRegion getMedPackRegion() {
-		return getTile(4);
+		return skin.getRegion("medpack");
 	}
 
 	public TextureRegion getFuelRegion() {
-		return getTile(5);
+		return skin.getRegion("fuel");
 	}
 
 	public TextureRegion getLifeRegion() {
-		return getMedPackRegion();
+		return skin.getRegion("life");
 	}
 
 	public TiledMap getMap(String name) {

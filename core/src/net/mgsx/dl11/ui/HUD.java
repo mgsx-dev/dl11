@@ -31,7 +31,7 @@ public class HUD extends Table
 		
 		root.add(lifeBar = new ItemBar(game.heroLife, GameSettings.HERO_LIFE_MAX, Assets.i.getLifeRegion(), skin));
 		root.add(fuelBar = new ItemBar(game.heroFuel, GameSettings.HERO_FUEL_MAX, Assets.i.getFuelRegion(), skin));
-		root.add(fuelRate = new MeterUI(Color.PURPLE, skin)).height(.3f).width(4f);
+		root.add(fuelRate = new MeterUI(Color.YELLOW, skin)).height(.3f).width(4f);
 		
 		// debugAll();
 		

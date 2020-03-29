@@ -4,16 +4,23 @@ size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+car
+  rotate: false
+  xy: 2, 77
+  size: 84, 34
+  orig: 84, 34
+  offset: 0, 0
+  index: -1
 default
   rotate: false
-  xy: 516, 25
+  xy: 516, 113
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 default-round
   rotate: false
-  xy: 774, 265
+  xy: 846, 353
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
@@ -22,7 +29,7 @@ default-round
   index: -1
 default-round-disabled
   rotate: false
-  xy: 2, 7
+  xy: 774, 281
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
@@ -31,7 +38,7 @@ default-round-disabled
   index: -1
 default-round-down
   rotate: false
-  xy: 2, 7
+  xy: 774, 281
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
@@ -40,23 +47,86 @@ default-round-down
   index: -1
 default-select
   rotate: false
-  xy: 2, 7
+  xy: 774, 281
   size: 16, 16
   split: 7, 7, 8, 7
   pad: 6, 6, 6, 5
   orig: 16, 16
   offset: 0, 0
   index: -1
+drone-blue
+  rotate: false
+  xy: 774, 333
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+drone-red
+  rotate: false
+  xy: 2, 39
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+fuel
+  rotate: false
+  xy: 88, 79
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+fuel-mini
+  rotate: false
+  xy: 122, 90
+  size: 14, 21
+  orig: 14, 21
+  offset: 0, 0
+  index: -1
+hero-south
+  rotate: false
+  xy: 774, 299
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+life
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+medpack
+  rotate: false
+  xy: 812, 337
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+medpack-mini
+  rotate: false
+  xy: 2, 20
+  size: 23, 17
+  orig: 23, 17
+  offset: 0, 0
+  index: -1
 title
   rotate: false
-  xy: 2, 25
+  xy: 2, 113
   size: 512, 256
   orig: 512, 256
   offset: 0, 0
   index: -1
+wheel
+  rotate: false
+  xy: 40, 55
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
 white
   rotate: false
-  xy: 2, 2
+  xy: 27, 34
   size: 3, 3
   orig: 3, 3
   offset: 0, 0

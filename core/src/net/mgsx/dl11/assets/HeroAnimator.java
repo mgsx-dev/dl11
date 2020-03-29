@@ -1,6 +1,5 @@
 package net.mgsx.dl11.assets;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class HeroAnimator {
@@ -15,8 +14,8 @@ public class HeroAnimator {
 	// private final Array<Array<TextureRegion>> regions = new Array<Array<TextureRegion>>();
 	private TextureRegion region;
 
-	public HeroAnimator(Texture texture) {
-		this.region = new TextureRegion(texture);
+	public HeroAnimator(TextureRegion region) {
+		this.region = region;
 		
 		/*
 		for(int i=0 ; i<4 ; i++){

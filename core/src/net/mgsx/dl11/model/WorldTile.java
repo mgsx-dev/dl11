@@ -332,14 +332,14 @@ public class WorldTile {
 			Car c = h.car;
 			if(c != null){
 				boolean collide = false;
-				float cRadius = .5f; // XXX 1
-				if(colMap.intersectCircle(center.set(h.position.x - 1, h.position.y), cRadius, false)){
+				float cRadius = .7f; // XXX 1
+				if(colMap.intersectCircle(center.set(h.position.x - .9f, h.position.y), cRadius, false)){
 					collide = true;
-					h.position.set(center).sub(-1, 0);
+					h.position.set(center).sub(-.9f, 0);
 				}
-				if(colMap.intersectCircle(center.set(h.position.x + 1, h.position.y), cRadius, false)){
+				if(colMap.intersectCircle(center.set(h.position.x + .5f, h.position.y), cRadius, false)){
 					collide = true;
-					h.position.set(center).sub(1, 0);
+					h.position.set(center).sub(.5f, 0);
 				}
 //				if(collide){
 //					h.position.set(c.position.x + c.width/2, c.position.y+c.height/2);

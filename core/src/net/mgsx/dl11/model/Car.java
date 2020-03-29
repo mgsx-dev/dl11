@@ -52,7 +52,7 @@ public class Car extends Entity {
 	public void update(float delta) {
 		time += delta;
 		
-		actor.setPosition(position.x, position.y + .5f);
+		actor.setPosition(position.x, position.y + .6f);
 		
 		
 		float carScale = 1f;

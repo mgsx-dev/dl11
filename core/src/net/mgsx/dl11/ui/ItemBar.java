@@ -23,9 +23,9 @@ public class ItemBar extends Table
 		
 		for(int i=0 ; i<max ; i++){
 			Image img = new Image(region);
-			img.setScaling(Scaling.stretch);
+			img.setScaling(Scaling.fit);
 			images.add(img);
-			add(img).size(.5f);
+			add(img).size(16f / 32f);
 		}
 		
 	}
