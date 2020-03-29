@@ -42,7 +42,6 @@ public class MedPack extends Bonus {
 			Assets.i.audio.playPickupMedpack();
 			return true;
 		}else{
-			Assets.i.audio.playBonusDenied();
 			return false;
 		}
 	}

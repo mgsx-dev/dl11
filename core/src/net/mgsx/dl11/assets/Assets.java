@@ -134,7 +134,7 @@ public class Assets {
 		return skin.getRegion("life-empty");
 	}
 	public TextureRegion getFuelMiniEmptyRegion() {
-		return skin.getRegion("fuel-mini-empty");
+		return skin.getRegion("fuel-open-mini");
 	}
 	
 	public TiledMap getMap(String name) {

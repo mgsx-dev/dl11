@@ -42,7 +42,6 @@ public class Fuel extends Bonus {
 			Assets.i.audio.playPickupFuel();
 			return true;
 		}else{
-			Assets.i.audio.playBonusDenied();
 			return false;
 		}
 	}

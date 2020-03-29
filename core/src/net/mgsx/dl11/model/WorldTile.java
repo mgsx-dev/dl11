@@ -54,6 +54,7 @@ public class WorldTile {
 	public boolean isFirstTile;
 	public boolean visited;
 	public String name;
+	private boolean wasOnBonus;
 	
 	
 	public WorldTile(GameState game) {
@@ -184,22 +185,30 @@ public class WorldTile {
 		if(!active) delta = 0; // XXX disable anims
 		
 		boolean playerFired = false;
+		boolean isOnBonus = false;
 		for(Entity e2 : entities){
 			if(e2 instanceof Drone){
 				playerFired |= ((Drone) e2).isFiringPlayer();
 			}
 			if(e2 instanceof Bonus){
 				Bonus b = (Bonus)e2;
-				if(hero.car == null && b.canBeAquired(game)){
+				if(hero.car == null){
 					if(hero.position.dst(e2.position) < 1){
-						if(b.aquire(game)){
+						if(b.canBeAquired(game) && b.aquire(game)){
 							Story.pickupBonus(game, b);
+						}else{
+							isOnBonus = true;
 						}
 					}
 				}
 			}
 		}
 		hero.fired = playerFired;
+		
+		if(isOnBonus && !wasOnBonus){
+			Assets.i.audio.playBonusDenied();
+		}
+		wasOnBonus = isOnBonus;
 		
 		this.hero.controlEnabled = active;
 		
@@ -384,6 +393,7 @@ public class WorldTile {
 		exiting = false;
 		entering = false;
 		active = false;
+		wasOnBonus = false;
 		
 		hero.car = null;
 		
