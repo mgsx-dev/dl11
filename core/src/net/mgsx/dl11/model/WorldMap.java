@@ -109,7 +109,13 @@ public class WorldMap {
 		cells[y*w+x] = worldTile;
 		
 		worldTile.map = MapUtils.copyMap(mapAsset, false);
-		worldTile.map.getLayers().add(MapUtils.copyLayer((TiledMapTileLayer)mapAsset.getLayers().get(0)));
+		
+		for(int i=0 ; i<mapAsset.getLayers().getCount() ; i++){
+			if(i != 1){
+				worldTile.map.getLayers().add(MapUtils.copyLayer((TiledMapTileLayer)mapAsset.getLayers().get(i)));
+			}
+		}
+		
 		worldTile.loadCollisions((TiledMapTileLayer)mapAsset.getLayers().get(0));
 		worldTile.load((TiledMapTileLayer)mapAsset.getLayers().get(1));
 		
