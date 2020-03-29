@@ -30,11 +30,11 @@ public class Dialogs {
 		text += "\n{BLINK=gray;red;8;0.5}Press X{ENDBLINK}{EVENT=hint}";
 		
 		Table alert = new Table(skin);
-		alert.setBackground(skin.newDrawable("white", new Color(0,0,0,1)));
+		alert.setBackground("typing");
 
 		TypingLabel label = new TypingLabel(text, skin);
 		label.setWrap(true);
-		alert.add(label).width(GameSettings.HUD_WIDTH - 30); // XXX padding
+		alert.add(label).width(GameSettings.HUD_WIDTH - 40).pad(10); // XXX padding
 
 		Table backdrop = new Table(skin){
 			@Override
