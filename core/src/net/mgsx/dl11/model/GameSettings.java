@@ -1,13 +1,14 @@
 package net.mgsx.dl11.model;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.PropertiesUtils;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Field;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 public class GameSettings 
 {
@@ -71,22 +72,20 @@ public class GameSettings
 	}
 
 	private static void patchFields() {
-		for(Field field : GameSettings.class.getDeclaredFields()){
-			int m = field.getModifiers();
-			if(!Modifier.isFinal(m) && Modifier.isStatic(m) && Modifier.isPublic(m)){
+		
+		for(Field field : ClassReflection.getDeclaredFields(GameSettings.class)){
+			if(!field.isFinal() && field.isStatic() && field.isPublic()){
 				String strVal = debugOptions.get(field.getName());
 				if(strVal != null){
 						try {
-							if(field.getType() == float.class) field.setFloat(null, Float.parseFloat(strVal));
-							if(field.getType() == int.class) field.setInt(null, Integer.parseInt(strVal));
-							if(field.getType() == boolean.class) field.setBoolean(null, Boolean.parseBoolean(strVal));
-							if(field.getType() == float.class) field.setFloat(null, Float.parseFloat(strVal));
-							if(field.getType() == float.class) field.setFloat(null, Float.parseFloat(strVal));
+							if(field.getType() == float.class) field.set(null, Float.parseFloat(strVal));
+							if(field.getType() == int.class) field.set(null, Integer.parseInt(strVal));
+							if(field.getType() == boolean.class) field.set(null, Boolean.parseBoolean(strVal));
+							if(field.getType() == float.class) field.set(null, Float.parseFloat(strVal));
+							if(field.getType() == float.class) field.set(null, Float.parseFloat(strVal));
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (IllegalAccessException e) {
+						} catch (ReflectionException e) {
 							e.printStackTrace();
 						}
 				}

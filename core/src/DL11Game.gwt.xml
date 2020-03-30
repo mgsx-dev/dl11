@@ -3,6 +3,12 @@
 <module>
 
 	<inherits name="com.rafaskoberg.gdx.typinglabel.typinglabel" />
-
+	<inherits name="regexodus"/>
+	
 	<source path="net/mgsx/dl11" />
+	
+	<source path="com/badlogic/gdx">
+		<include name="utils/Align.java"/>
+	</source>
+	
 </module>

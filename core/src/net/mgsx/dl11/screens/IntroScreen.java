@@ -18,7 +18,7 @@ public class IntroScreen extends StageScreen {
 		
 		// Skin skin = Assets.i.skin;
 		
-		Dialogs.spawnInfo(stage, Story.introText(), Align.center, ()->DL11Game.i().setScreen(new GameScreen()));
+		Dialogs.spawnInfo(stage, Story.introText(), Align.center, ()->DL11Game.i().scheduleNextScreen(new GameScreen()));
 	}
 	
 	@Override

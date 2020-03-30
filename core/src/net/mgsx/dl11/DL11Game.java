@@ -15,6 +15,8 @@ public class DL11Game extends Game {
 	public static DL11Game i(){
 		return (DL11Game)Gdx.app.getApplicationListener();
 	}
+
+	private Screen nextScreen;
 	
 	@Override
 	public void create () {
@@ -29,6 +31,10 @@ public class DL11Game extends Game {
 			setScreen(new MenuScreen());
 		}
 	}
+	
+	public void scheduleNextScreen(Screen screen){
+		nextScreen = screen;
+	}
 
 	@Override
 	public void setScreen(Screen screen) {
@@ -37,5 +43,14 @@ public class DL11Game extends Game {
 		if(prevScreen != null){
 			prevScreen.dispose();
 		}
+	}
+	
+	@Override
+	public void render() {
+		if(nextScreen != null){
+			setScreen(nextScreen);
+			nextScreen = null;
+		}
+		super.render();
 	}
 }

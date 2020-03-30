@@ -38,7 +38,7 @@ public class MenuScreen extends StageScreen {
 	
 	private void startGame(){
 		Assets.i.audio.playMenuButton();
-		DL11Game.i().setScreen(new IntroScreen());
+		DL11Game.i().scheduleNextScreen(new IntroScreen());
 	}
 	
 	@Override
